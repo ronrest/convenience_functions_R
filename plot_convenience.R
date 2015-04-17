@@ -1,6 +1,7 @@
 
 library(Hmisc)  # Used for floating point matches
-
+#TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
+#      secondary libraries which slow load time.
 
 
 shade_between <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
@@ -173,7 +174,29 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 
+plot_distribution <- function(mean=NA, sd=NA, dist="normal", res=100){
+    #
+    # res:  int.  Resolution of the plot (measured as the number of data points)
+    #
+    #
+    
+    #-------------------------------------------------------------------------
+    #                                               Handle Normal Distribution
+    #-------------------------------------------------------------------------
+    if (dist=="normal"){
+        if (is.na(mean)){ mean = 0} 
+        if (is.na(sd)){ sd = 1 }
+        x_min = qnorm(0.0001, mean=mean, sd=sd)
+        x_max = qnorm(0.9999, mean=mean, sd=sd)
+        x = seq(x_min, x_max, by=(x_max-x_min)/res)
+        y = dnorm(x, mean=mean, sd=sd)
+        plot(x,y, type="l")
+        abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
+    }
+}
 
+# Plot Common Distributions
+#plot_distribution(mean=100, sd=15, dist="normal")
 
 
 # Shades the tails before -5 and after 5 in a bell curve
