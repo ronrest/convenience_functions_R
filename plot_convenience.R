@@ -176,6 +176,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 plot_distribution <- function(mean=NA, sd=NA, dist="normal", res=100){
     #
+    # dist: "normal" ""
     # res:  int.  Resolution of the plot (measured as the number of data points)
     #
     #
@@ -192,7 +193,24 @@ plot_distribution <- function(mean=NA, sd=NA, dist="normal", res=100){
         y = dnorm(x, mean=mean, sd=sd)
         plot(x,y, type="l")
         abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
+    } 
+    #-------------------------------------------------------------------------
+    #                                              Handle Poisson Distribution
+    #-------------------------------------------------------------------------
+    else if (dist=="poisson"){
+        if (is.na(mean)){ mean = 1} 
+        x_min = qpois(0.0001, lambda=mean)
+        x_max = qpois(0.9999, lambda=mean)
+        x = x_min:x_max
+        y = dpois(x, lambda=mean)
+        barplot(y, names.arg=x)
+        # TODO: Find an alternative to abline that actually places a vertical 
+        #       line in the correct position when using in conjunction with 
+        #       barplot.
+        #abline(v=qpois(0.5, lambda=mean), col="red", lwd="5")
     }
+    
+    
 }
 
 # Plot Common Distributions
