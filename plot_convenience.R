@@ -192,7 +192,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100, 
-                              return.df=FALSE){
+                              return.df=FALSE, p.lower=0.0001, p.upper=0.9999){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -220,6 +220,13 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     #             DEFAULT = 100 if using normal distribution
     #  return.df : should it return a dataframe of the x and y values? 
     #             DEFAULT = FALSE
+    #   p.lower : numeric. A quantile used to calculate the lower end of the 
+    #             x axis to plot. eg, if a value of 0.25 is used, then the x  
+    #             axis will start at the 25th percentile of the distribution.
+    #             DEFAULT = 0.0001 
+    #   p.upper : numeric. quantile used to calculate the upper end of the 
+    #             x axis to plot.
+    #             DEFAULT = 0.9999
     #===========================================================================
     #TODO: check the data types of the inputs
     
@@ -229,8 +236,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     if (dist=="normal"){
         if (is.na(mean)){ mean = 0} 
         if (is.na(sd)){ sd = 1 }
-        x_min = qnorm(0.0001, mean=mean, sd=sd)
-        x_max = qnorm(0.9999, mean=mean, sd=sd)
+        x_min = qnorm(p.lower, mean=mean, sd=sd)
+        x_max = qnorm(p.upper, mean=mean, sd=sd)
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dnorm(x, mean=mean, sd=sd)
         title = sprintf("Normal Distribution with\n mean=%.2f and sd=%.2f", mean, sd)
@@ -242,8 +249,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     #-------------------------------------------------------------------------
     else if (dist=="poisson"){
         if (is.na(mean)){ mean = 1} 
-        x_min = qpois(0.0001, lambda=mean)
-        x_max = qpois(0.9999, lambda=mean)
+        x_min = qpois(p.lower, lambda=mean)
+        x_max = qpois(p.upper, lambda=mean)
         x = x_min:x_max
         y = dpois(x, lambda=mean)
         title = sprintf("Poisson Distribution with\n lambda=%d", mean)
@@ -260,8 +267,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         #TODO: check the data types of the inputs
         if (is.na(n)){ n = 1}
         if (is.na(p)){ p = 0.5}
-        x_min = qbinom(0.0001, size=n, prob=p)
-        x_max = qbinom(0.9999, size=n, prob=p)
+        x_min = qbinom(p.lower, size=n, prob=p)
+        x_max = qbinom(p.upper, size=n, prob=p)
         x = x_min:x_max
         y = dbinom(x, n,prob=p)
         title = sprintf("Binomial Distribution with\n n=%d and p=%.3f", n, p)
@@ -284,6 +291,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
 #plot_distribution("poisson", mean=100)
 #plot_distribution("binomial", n=3, p=0.5)
 #plot_distribution("binomial", n=500, p=0.01)
+#plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
 
 # Shades the tails before -5 and after 5 in a bell curve
 #x = seq(-9,9,by=0.9)
