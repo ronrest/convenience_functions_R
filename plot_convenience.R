@@ -257,7 +257,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         #TODO: check the data types of the inputs
         if (is.na(n)){ n = 1}
         if (is.na(p)){ p = 0.5}
-        x = 0:n
+        x_min = qbinom(0.0001, size=n, prob=p)
+        x_max = qbinom(0.9999, size=n, prob=p)
+        x = x_min:x_max
         y = dbinom(x, n,prob=p)
         title = sprintf("Binomial Distribution with\n n=%d and p=%.3f", n, p)
         barplot(y, names.arg=x, main=title)
@@ -272,7 +274,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
 #plot_distribution("normal", mean=100, sd=15)
 #plot_distribution("poisson", mean=100)
 #plot_distribution("binomial", n=3, p=0.5)
-
+#plot_distribution("binomial", n=500, p=0.01)
 
 # Shades the tails before -5 and after 5 in a bell curve
 #x = seq(-9,9,by=0.9)
