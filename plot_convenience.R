@@ -191,7 +191,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 
-plot_distribution <- function(dist="normal", mean=NA, sd=NA, res=100){
+plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -199,18 +199,26 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, res=100){
     # its mean and standard deviation. 
     # 
     # ARGS: 
-    #   dist    : "normal" or "poisson" determines the distribution to use.
+    #   dist    : "normal" "poisson" "binomial" determines the distribution to 
+    #             use.
     #   mean    : numeric. The mean of the distribution. If using poisson, this 
     #             is ths lambda value.
     #             DEFAULT = 0 if using normal distribution. 
     #             DEFAULT = 1 if using poisson distribution. 
     #   sd      : Standard deviation. 
     #             DEFAULT = 1
+    #   n       : int. Used when dealing with binomial distribution. The number 
+    #             of times we run the binomial event, eg flip a coin.
+    #             DEFAULT: 1
+    #   p       : numeric. probability of success when using binomial 
+    #             deistribution
+    #             DEFAULT: 0.5
     #   res     : integer. Resolution of the plot (measured as the number of 
     #             data points along the x axis)
     #             Not implemented for Poisson distribution yet.
     #             DEFAULT = 100 if using normal distribution
     #===========================================================================
+    #TODO: check the data types of the inputs
     
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
@@ -240,8 +248,22 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, res=100){
         #       barplot.
         #abline(v=qpois(0.5, lambda=mean), col="red", lwd="5")
     }
-    
-    
+    #-------------------------------------------------------------------------
+    #                                             Handle Binomial Distribution
+    #-------------------------------------------------------------------------
+    else if (dist=="binomial"){
+        #TODO: check the data types of the inputs
+        if (is.na(n)){ n = 1}
+        if (is.na(p)){ p = 0.5}
+        x = 0:n
+        y = dbinom(x, n,prob=p)
+        title = sprintf("Binomial Distribution with\n n=%d and p=%.3f", n, p)
+        barplot(y, names.arg=x, main=title)
+        # TODO: Find an alternative to abline that actually places a vertical 
+        #       line in the correct position when using in conjunction with 
+        #       barplot.
+        #abline(v=qpois(0.5, lambda=mean), col="red", lwd="5")
+    }
 }
 
 # Plot Common Distributions
@@ -252,8 +274,6 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, res=100){
 #x = seq(-9,9,by=0.9)
 #y = dnorm(x, mean=0, sd=3)
 #shade_outside(x,y,-3, 2, type="o", lwd=2, shade.density=20)
-
-
 
 
 
