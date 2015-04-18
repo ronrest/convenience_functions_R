@@ -3,6 +3,17 @@ library(Hmisc)  # Used for floating point matches
 #TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
 #      secondary libraries which slow load time.
 
+shade_after <- function(x, y, boundary, ...){
+    # Shades area under the curve from boundary to values of x that are higher.
+    upper <- x[length(x)]
+    shade_between(x, y, boundary, upper)
+}
+
+shade_before <- function(x, y, boundary, ...){
+    # Shades area under the curve from boundary to values of x that are lower.
+    lower <- x[1]
+    shade_between(x, y, lower, boundary)
+}
 
 shade_between <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
                           shade.lty=par("lty"), shade.density=NULL, 
@@ -292,6 +303,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
 #plot_distribution("binomial", n=3, p=0.5)
 #plot_distribution("binomial", n=500, p=0.01)
 #plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
+
+
+#df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
+#shade_after(df$x, df$y, 120)
+#shade_before(df$x, df$y, 120)
 
 # Shades the tails before -5 and after 5 in a bell curve
 #x = seq(-9,9,by=0.9)
