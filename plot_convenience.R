@@ -191,7 +191,8 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 
-plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100){
+plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100, 
+                              return.df=FALSE){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -217,6 +218,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     #             data points along the x axis)
     #             Not implemented for Poisson distribution yet.
     #             DEFAULT = 100 if using normal distribution
+    #  return.df : should it return a dataframe of the x and y values? 
+    #             DEFAULT = FALSE
     #===========================================================================
     #TODO: check the data types of the inputs
     
@@ -268,6 +271,12 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         #       barplot.
         #abline(v=qpois(0.5, lambda=mean), col="red", lwd="5")
     }
+    #-------------------------------------------------------------------------
+    #                                 Return the dataframe if it was requested
+    #-------------------------------------------------------------------------
+    if (return.df){
+        return(data.frame(x, y))
+    } else return(NA)
 }
 
 # Plot Common Distributions
