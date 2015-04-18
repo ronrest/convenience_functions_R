@@ -191,12 +191,26 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 
-plot_distribution <- function(mean=NA, sd=NA, dist="normal", res=100){
-    #
-    # dist: "normal" ""
-    # res:  int.  Resolution of the plot (measured as the number of data points)
-    #
-    #
+plot_distribution <- function(dist="normal", mean=NA, sd=NA, res=100){
+    #===========================================================================
+    #                                                          PLOT DISTRIBUTION
+    #===========================================================================
+    # Plots what a particular distribution looks like given parameters such as 
+    # its mean and standard deviation. 
+    # 
+    # ARGS: 
+    #   dist    : "normal" or "poisson" determines the distribution to use.
+    #   mean    : numeric. The mean of the distribution. If using poisson, this 
+    #             is ths lambda value.
+    #             DEFAULT = 0 if using normal distribution. 
+    #             DEFAULT = 1 if using poisson distribution. 
+    #   sd      : Standard deviation. 
+    #             DEFAULT = 1
+    #   res     : integer. Resolution of the plot (measured as the number of 
+    #             data points along the x axis)
+    #             Not implemented for Poisson distribution yet.
+    #             DEFAULT = 100 if using normal distribution
+    #===========================================================================
     
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
