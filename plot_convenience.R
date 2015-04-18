@@ -230,7 +230,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         x_max = qnorm(0.9999, mean=mean, sd=sd)
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dnorm(x, mean=mean, sd=sd)
-        plot(x,y, type="l")
+        title = sprintf("Normal Distribution with\n mean=%.2f and sd=%.2f", mean, sd)
+        plot(x,y, type="l", main=title)
         abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
     } 
     #-------------------------------------------------------------------------
@@ -242,7 +243,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         x_max = qpois(0.9999, lambda=mean)
         x = x_min:x_max
         y = dpois(x, lambda=mean)
-        barplot(y, names.arg=x)
+        title = sprintf("Poisson Distribution with\n lambda=%d", mean)
+        barplot(y, names.arg=x, main=title)
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
         #       barplot.
@@ -267,13 +269,12 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
 }
 
 # Plot Common Distributions
-#plot_distribution(mean=100, sd=15, dist="normal")
+#plot_distribution("normal", mean=100, sd=15)
+#plot_distribution("poisson", mean=100)
+#plot_distribution("binomial", n=3, p=0.5)
 
 
 # Shades the tails before -5 and after 5 in a bell curve
 #x = seq(-9,9,by=0.9)
 #y = dnorm(x, mean=0, sd=3)
 #shade_outside(x,y,-3, 2, type="o", lwd=2, shade.density=20)
-
-
-
