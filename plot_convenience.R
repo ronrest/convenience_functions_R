@@ -299,6 +299,21 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     } else return(NA)
 }
 
+
+
+plot_sample_dist(n, mean=NA, sd=NA, overlay=TRUE){
+    # TODO: actually implement this function. 
+    # A funciton that draws a sample distribution plot. You can optionally 
+    # select to ovelray the plot of the population/sample that the sample 
+    # distribution comes from, so you can see how the variance has shrunk. 
+    # Optionally, you can also make it plot some confidence interval, either as 
+    # a percentage (eg you specify you want to draw the 95% confidence interval)
+    # or by range (eg, you specify that you are interested in values bewtween 
+    # x_min and x_max).
+    # 
+    print("TODO: still need to implement plot_sample_dist()")
+}
+
 # Plot Common Distributions
 #plot_distribution("normal", mean=100, sd=15)
 #plot_distribution("poisson", mean=100)
