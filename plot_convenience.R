@@ -312,6 +312,10 @@ plot_sample_dist(n, mean=NA, sd=NA, overlay=TRUE){
     # x_min and x_max).
     # 
     print("TODO: still need to implement plot_sample_dist()")
+    #lower.tail = pnorm(lower.int, mean=mean, sd=SE)
+    #upper.tail = pnorm(upper.int, mean=mean, sd=SE, lower.tail=FALSE)
+    #estimated_prob = 1 - lower.tail - upper.tail     
+    
 }
 
 # Plot Common Distributions
