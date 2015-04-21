@@ -204,8 +204,9 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 
-plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100, 
-                              return.df=FALSE, p.lower=0.0001, p.upper=0.9999){
+plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
+                              res=100, return.df=FALSE, p.lower=0.0001, 
+                              p.upper=0.9999){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -213,8 +214,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     # its mean and standard deviation. 
     # 
     # ARGS: 
-    #   dist    : "normal" "poisson" "binomial" determines the distribution to 
-    #             use.
+    #   dist    : "normal" "poisson" "binomial" "t" determines the distribution  
+    #             to use.
     #   mean    : numeric. The mean of the distribution. If using poisson, this 
     #             is ths lambda value.
     #             DEFAULT = 0 if using normal distribution. 
@@ -227,6 +228,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     #   p       : numeric. probability of success when using binomial 
     #             deistribution
     #             DEFAULT: 0.5
+    #   df      : Degrees of Freedom when using t distribution
+    #             DEFAULT = 1
     #   res     : integer. Resolution of the plot (measured as the number of 
     #             data points along the x axis)
     #             Not implemented for Poisson distribution yet.
@@ -256,6 +259,19 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
         title = sprintf("Normal Distribution with\n mean=%.2f and sd=%.2f", mean, sd)
         plot(x,y, type="l", main=title)
         abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
+    } 
+    #-------------------------------------------------------------------------
+    #                                                    Handle t Distribution
+    #-------------------------------------------------------------------------
+    else if (dist=="t"){
+        if (is.na(df)){ df = 1}
+        x_min = qt(p.lower, df=df)
+        x_max = qt(p.upper, df=df)
+        x = seq(x_min, x_max, by=(x_max-x_min)/res)
+        y = dt(x, df=df)
+        title = sprintf("t Distribution with\n df = %.2f", df)
+        plot(x,y, type="l", main=title)
+        abline(v=qt(0.5, df=df), col="red")
     } 
     #-------------------------------------------------------------------------
     #                                              Handle Poisson Distribution
@@ -296,27 +312,32 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, res=100
     #-------------------------------------------------------------------------
     if (return.df){
         return(data.frame(x, y))
-    } else return(NA)
+    } 
+    else return(NA)
 }
 
 
 
-plot_sample_dist(n, mean=NA, sd=NA, overlay=TRUE){
-    # TODO: actually implement this function. 
-    # A funciton that draws a sample distribution plot. You can optionally 
-    # select to ovelray the plot of the population/sample that the sample 
-    # distribution comes from, so you can see how the variance has shrunk. 
-    # Optionally, you can also make it plot some confidence interval, either as 
-    # a percentage (eg you specify you want to draw the 95% confidence interval)
-    # or by range (eg, you specify that you are interested in values bewtween 
-    # x_min and x_max).
-    # 
-    print("TODO: still need to implement plot_sample_dist()")
-    #lower.tail = pnorm(lower.int, mean=mean, sd=SE)
-    #upper.tail = pnorm(upper.int, mean=mean, sd=SE, lower.tail=FALSE)
-    #estimated_prob = 1 - lower.tail - upper.tail     
-    
-}
+# plot_sample_dist(n, mean=NA, sd=NA, overlay=TRUE){
+#     # TODO: actually implement this function. 
+#     # A funciton that draws a sample distribution plot. You can optionally 
+#     # select to ovelray the plot of the population/sample that the sample 
+#     # distribution comes from, so you can see how the variance has shrunk. 
+#     # Optionally, you can also make it plot some confidence interval, either as 
+#     # a percentage (eg you specify you want to draw the 95% confidence interval)
+#     # or by range (eg, you specify that you are interested in values bewtween 
+#     # x_min and x_max).
+#     # 
+#     print("TODO: still need to implement plot_sample_dist()")
+#     #lower.tail = pnorm(lower.int, mean=mean, sd=SE)
+#     #upper.tail = pnorm(upper.int, mean=mean, sd=SE, lower.tail=FALSE)
+#     #estimated_prob = 1 - lower.tail - upper.tail     
+#     
+# }
+
+
+#source("~/programming/R/projects/convenience/plot_convenience.R")
+
 
 # Plot Common Distributions
 #plot_distribution("normal", mean=100, sd=15)
@@ -325,6 +346,7 @@ plot_sample_dist(n, mean=NA, sd=NA, overlay=TRUE){
 #plot_distribution("binomial", n=500, p=0.01)
 #plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
 
+#plot_distribution("t", df=3)
 
 #df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
 #shade_after(df$x, df$y, 120)
