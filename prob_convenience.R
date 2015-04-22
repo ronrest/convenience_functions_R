@@ -24,5 +24,7 @@ coinflipper <- function(n.flips=1, n.success=1, p=0.5){
     print("===================================================================")
 }
 
+
+#source("~/programming/R/projects/convenience/prob_convenience.R")
 #coinflipper(n.flips=9, n.success=2, p=0.5)
 
