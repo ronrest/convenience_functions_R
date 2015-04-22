@@ -205,7 +205,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
-                              df2=NA, res=100, return.df=FALSE, p.lower=0.0001, 
+                              df2=NA, rate=NA, res=100, return.df=FALSE, p.lower=0.0001, 
                               p.upper=0.9999){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
@@ -214,8 +214,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     # its mean and standard deviation. 
     # 
     # ARGS: 
-    #   dist    : "normal" "poisson" "binomial" "t" "f" determines the distribution  
-    #             to use.
+    #   dist    : "normal" "poisson" "binomial" "t" "f" "exp" determines the   
+    #             distribution to use.
     #   mean    : numeric. The mean of the distribution. If using poisson, this 
     #             is ths lambda value.
     #             DEFAULT = 0 if using normal distribution. 
@@ -234,6 +234,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #             DEFAULT = 10  (if "f" distribution chosen)
     #   df2     : Second degrees of freedom when using f distribution
     #             DEFAULT = 100
+    #   rate    : Used for exponential Distribution
+    #             DEFAULT = 1
     #   res     : integer. Resolution of the plot (measured as the number of 
     #             data points along the x axis)
     #             Not implemented for Poisson distribution yet.
@@ -276,6 +278,19 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         title = sprintf("t Distribution with\n df = %.2f", df)
         plot(x,y, type="l", main=title)
         abline(v=qt(0.5, df=df), col="red")
+    } 
+    #-------------------------------------------------------------------------
+    #                                                  Handle exp Distribution
+    #-------------------------------------------------------------------------
+    else if (dist=="exp"){
+        if (is.na(rate)){ rate = 1}
+        x_min = qexp(p.lower, rate=rate)
+        x_max = qexp(p.upper, rate=rate)
+        x = seq(x_min, x_max, by=(x_max-x_min)/res)
+        y = dexp(x, rate=rate)
+        title = sprintf("Exponential Distribution with\n rate = %.2f", rate)
+        plot(x,y, type="l", main=title)
+        abline(v=qexp(0.5, rate=rate), col="red")
     } 
     #-------------------------------------------------------------------------
     #                                                    Handle f Distribution
@@ -366,6 +381,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 
 #plot_distribution("t", df=3)
 #plot_distribution("f", df=10, df2=100)
+#plot_distribution("exp", rate=3)
 
 #df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
 #shade_after(df$x, df$y, 120)
