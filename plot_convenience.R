@@ -205,7 +205,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
-                              res=100, return.df=FALSE, p.lower=0.0001, 
+                              df2=NA, res=100, return.df=FALSE, p.lower=0.0001, 
                               p.upper=0.9999){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
@@ -214,7 +214,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     # its mean and standard deviation. 
     # 
     # ARGS: 
-    #   dist    : "normal" "poisson" "binomial" "t" determines the distribution  
+    #   dist    : "normal" "poisson" "binomial" "t" "f" determines the distribution  
     #             to use.
     #   mean    : numeric. The mean of the distribution. If using poisson, this 
     #             is ths lambda value.
@@ -228,8 +228,12 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #   p       : numeric. probability of success when using binomial 
     #             deistribution
     #             DEFAULT: 0.5
-    #   df      : Degrees of Freedom when using t distribution
-    #             DEFAULT = 1
+    #   df      : Degrees of Freedom when using t distribution. 
+    #             Or the first degrees of freedom when using f distribution
+    #             DEFAULT = 1   (if "t" distribution chosen)
+    #             DEFAULT = 10  (if "f" distribution chosen)
+    #   df2     : Second degrees of freedom when using f distribution
+    #             DEFAULT = 100
     #   res     : integer. Resolution of the plot (measured as the number of 
     #             data points along the x axis)
     #             Not implemented for Poisson distribution yet.
@@ -273,6 +277,20 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         plot(x,y, type="l", main=title)
         abline(v=qt(0.5, df=df), col="red")
     } 
+    #-------------------------------------------------------------------------
+    #                                                    Handle f Distribution
+    #-------------------------------------------------------------------------
+    else if (dist=="f"){
+        if (is.na(df)){ df = 10}
+        if (is.na(df2)){ df2 = 100}
+        x_min = qf(p.lower, df1=df, df2=df2)
+        x_max = qf(p.upper, df1=df, df2=df2)
+        x = seq(x_min, x_max, by=(x_max-x_min)/res)
+        y = df(x, df1=df, df2=df2)
+        title = sprintf("f Distribution with\n df1 = %.2f and df2 = %.2f", df, df2)
+        plot(x,y, type="l", main=title)
+        abline(v=qf(0.5, df1=df, df2=df2), col="red")
+    }
     #-------------------------------------------------------------------------
     #                                              Handle Poisson Distribution
     #-------------------------------------------------------------------------
@@ -347,6 +365,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 #plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
 
 #plot_distribution("t", df=3)
+#plot_distribution("f", df=10, df2=100)
 
 #df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
 #shade_after(df$x, df$y, 120)
