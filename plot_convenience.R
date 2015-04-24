@@ -250,7 +250,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #             x axis to plot.
     #             DEFAULT = 0.9999
     #===========================================================================
-    #TODO: check the data types of the inputs
+    # TODO: Check the data types of the inputs
+    # TODO: Add option to draw exponential distribution using either lambda OR 
+    #       the mean (where mean = 1/lambda) or sd (sd=1/lambda). But give
+    #       preference in this order (lambda, mean, sd) if more than one of 
+    #       those arguments is given.  
     
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
