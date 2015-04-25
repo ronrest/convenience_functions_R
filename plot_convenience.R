@@ -245,6 +245,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #  primary   : boolean. Whether to plot as primary plot using plot() or 
     #              append to an exisitng plot using points()
     #              DEFAULT = TRUE
+    # show.mean  : Show a vertical line highlihgting mean of the distribution?
+    #              DEFAULT = TRUE
     #   p.lower : numeric. A quantile used to calculate the lower end of the 
     #             x axis to plot. eg, if a value of 0.25 is used, then the x  
     #             axis will start at the 25th percentile of the distribution.
@@ -260,6 +262,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #       preference in this order (lambda, mean, sd) if more than one of 
     #       those arguments is given.  
     # TODO: currently the vertical line is plotting median not mean
+    # TODO: implement show.mean option
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
     #-------------------------------------------------------------------------
