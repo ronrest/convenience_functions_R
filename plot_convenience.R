@@ -259,8 +259,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #       the mean (where mean = 1/lambda) or sd (sd=1/lambda). But give
     #       preference in this order (lambda, mean, sd) if more than one of 
     #       those arguments is given.  
-    # TODO: Implement the option of plotting non-primary plots using points() 
-    #       instead of plot()
+    # TODO: currently the vertical line is plotting median not mean
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
     #-------------------------------------------------------------------------
