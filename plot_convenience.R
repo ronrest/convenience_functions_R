@@ -206,7 +206,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
                               df2=NA, rate=NA, res=100, return.df=FALSE, 
-                              primary=TRUE, p.lower=0.0001, p.upper=0.9999){
+                              primary=TRUE, p.lower=0.0001, p.upper=0.9999, ...){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -254,7 +254,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #   p.upper : numeric. quantile used to calculate the upper end of the 
     #             x axis to plot.
     #             DEFAULT = 0.9999
-    # 
+    # ...       : other parameters to pass onto the plot
     #===========================================================================
     # TODO: Check the data types of the inputs
     # TODO: Add option to draw exponential distribution using either lambda OR 
@@ -275,9 +275,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = dnorm(x, mean=mean, sd=sd)
         title = sprintf("Normal Distribution with\n mean=%.2f and sd=%.2f", mean, sd)
         if (primary){
-            plot(x,y, type="l", main=title)
+            plot(x,y, type="l", main=title, ...)
         } else {
-            points(x,y, type="l")
+            points(x,y, type="l", ...)
         }
         abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
     } 
@@ -292,9 +292,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = dt(x, df=df)
         title = sprintf("t Distribution with\n df = %.2f", df)
         if (primary){
-            plot(x,y, type="l", main=title)
+            plot(x,y, type="l", main=title, ...)
         } else {
-            points(x,y, type="l")
+            points(x,y, type="l", ...)
         }
         abline(v=qt(0.5, df=df), col="red")
     } 
@@ -309,9 +309,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = dexp(x, rate=rate)
         title = sprintf("Exponential Distribution with\n rate = %.2f", rate)
         if (primary){
-            plot(x,y, type="l", main=title)
+            plot(x,y, type="l", main=title, ...)
         } else {
-            points(x,y, type="l")
+            points(x,y, type="l", ...)
         }
         abline(v=qexp(0.5, rate=rate), col="red")
     } 
@@ -327,9 +327,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = df(x, df1=df, df2=df2)
         title = sprintf("f Distribution with\n df1 = %.2f and df2 = %.2f", df, df2)
         if (primary){
-            plot(x,y, type="l", main=title)
+            plot(x,y, type="l", main=title, ...)
         } else {
-            points(x,y, type="l")
+            points(x,y, type="l", ...)
         }
         abline(v=qf(0.5, df1=df, df2=df2), col="red")
     }
@@ -347,7 +347,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
             warning("Secondary plotting is not yet implemented for poisson ",
                     "distribution")
         } else {
-            barplot(y, names.arg=x, main=title)    
+            barplot(y, names.arg=x, main=title, ...)    
         }
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
@@ -370,7 +370,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
             warning("Secondary plotting is not yet implemented for binomial ",
                     "distribution")
         } else {
-            barplot(y, names.arg=x, main=title)
+            barplot(y, names.arg=x, main=title, ...)
         }
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
@@ -420,7 +420,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 #plot_distribution("f", df=10, df2=100)
 #plot_distribution("exp", rate=3)
 
-plot_distribution("exp", rate=0.1, primary=FALSE)
+#plot_distribution("normal", mean=5, sd=5, primary=TRUE, col="green")
+#plot_distribution("exp", rate=0.1, primary=FALSE, col="pink")
 
 #df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
 #shade_after(df$x, df$y, 120)
