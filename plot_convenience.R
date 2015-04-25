@@ -252,6 +252,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #   p.upper : numeric. quantile used to calculate the upper end of the 
     #             x axis to plot.
     #             DEFAULT = 0.9999
+    # 
     #===========================================================================
     # TODO: Check the data types of the inputs
     # TODO: Add option to draw exponential distribution using either lambda OR 
@@ -271,7 +272,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dnorm(x, mean=mean, sd=sd)
         title = sprintf("Normal Distribution with\n mean=%.2f and sd=%.2f", mean, sd)
-        plot(x,y, type="l", main=title)
+        if (primary){
+            plot(x,y, type="l", main=title)
+        } else {
+            points(x,y, type="l")
+        }
         abline(v=qnorm(0.5, mean=mean, sd=sd), col="red")
     } 
     #-------------------------------------------------------------------------
@@ -284,7 +289,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dt(x, df=df)
         title = sprintf("t Distribution with\n df = %.2f", df)
-        plot(x,y, type="l", main=title)
+        if (primary){
+            plot(x,y, type="l", main=title)
+        } else {
+            points(x,y, type="l")
+        }
         abline(v=qt(0.5, df=df), col="red")
     } 
     #-------------------------------------------------------------------------
@@ -297,7 +306,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dexp(x, rate=rate)
         title = sprintf("Exponential Distribution with\n rate = %.2f", rate)
-        plot(x,y, type="l", main=title)
+        if (primary){
+            plot(x,y, type="l", main=title)
+        } else {
+            points(x,y, type="l")
+        }
         abline(v=qexp(0.5, rate=rate), col="red")
     } 
     #-------------------------------------------------------------------------
@@ -311,7 +324,11 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = df(x, df1=df, df2=df2)
         title = sprintf("f Distribution with\n df1 = %.2f and df2 = %.2f", df, df2)
-        plot(x,y, type="l", main=title)
+        if (primary){
+            plot(x,y, type="l", main=title)
+        } else {
+            points(x,y, type="l")
+        }
         abline(v=qf(0.5, df1=df, df2=df2), col="red")
     }
     #-------------------------------------------------------------------------
@@ -324,7 +341,12 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = x_min:x_max
         y = dpois(x, lambda=mean)
         title = sprintf("Poisson Distribution with\n lambda=%d", mean)
-        barplot(y, names.arg=x, main=title)
+        if (!primary){
+            warning("Secondary plotting is not yet implemented for poisson ",
+                    "distribution")
+        } else {
+            barplot(y, names.arg=x, main=title)    
+        }
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
         #       barplot.
@@ -342,7 +364,12 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x = x_min:x_max
         y = dbinom(x, n,prob=p)
         title = sprintf("Binomial Distribution with\n n=%d and p=%.3f", n, p)
-        barplot(y, names.arg=x, main=title)
+        if (!primary){
+            warning("Secondary plotting is not yet implemented for binomial ",
+                    "distribution")
+        } else {
+            barplot(y, names.arg=x, main=title)
+        }
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
         #       barplot.
@@ -390,6 +417,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 #plot_distribution("t", df=3)
 #plot_distribution("f", df=10, df2=100)
 #plot_distribution("exp", rate=3)
+
+plot_distribution("exp", rate=0.1, primary=FALSE)
 
 #df = plot_distribution("normal", mean=100, sd=15, return.df=TRUE)
 #shade_after(df$x, df$y, 120)
