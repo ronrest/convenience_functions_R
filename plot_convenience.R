@@ -205,8 +205,8 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
 
 
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
-                              df2=NA, rate=NA, res=100, return.df=FALSE, p.lower=0.0001, 
-                              p.upper=0.9999){
+                              df2=NA, rate=NA, res=100, return.df=FALSE, 
+                              primary=TRUE, p.lower=0.0001, p.upper=0.9999){
     #===========================================================================
     #                                                          PLOT DISTRIBUTION
     #===========================================================================
@@ -242,6 +242,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #             DEFAULT = 100 if using normal distribution
     #  return.df : should it return a dataframe of the x and y values? 
     #             DEFAULT = FALSE
+    #  primary   : boolean. Whether to plot as primary plot using plot() or 
+    #              append to an exisitng plot using points()
+    #              DEFAULT = TRUE
     #   p.lower : numeric. A quantile used to calculate the lower end of the 
     #             x axis to plot. eg, if a value of 0.25 is used, then the x  
     #             axis will start at the 25th percentile of the distribution.
@@ -255,7 +258,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #       the mean (where mean = 1/lambda) or sd (sd=1/lambda). But give
     #       preference in this order (lambda, mean, sd) if more than one of 
     #       those arguments is given.  
-    
+    # TODO: Implement the option of plotting non-primary plots using points() 
+    #       instead of plot()
     #-------------------------------------------------------------------------
     #                                               Handle Normal Distribution
     #-------------------------------------------------------------------------
