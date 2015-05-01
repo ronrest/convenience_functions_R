@@ -1,0 +1,8 @@
+Package: plot.convenience
+Title: Conveneince functions for plotting
+Version: 0.0.0.01
+Authors@R: person("Ronny", "Restrepo", , "ronny.coding@gmail.com", role = c("aut", "cre"))
+Description: Convenience functions for plotting 
+Depends: R (>= 3.1.0)
+License: GPL v2
+LazyData: true
