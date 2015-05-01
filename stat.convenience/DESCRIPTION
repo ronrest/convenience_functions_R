@@ -1,0 +1,8 @@
+Package: stat.convenience
+Title: Convenience Functions for probability and statistics
+Version: 0.0.0.01
+Authors@R: person("Ronny", "Restrepo", , "ronny.coding@gmail.com", role = c("aut", "cre"))
+Description: Convenience Functions for probability and statistics
+Depends: R (>= 3.1.3)
+License: GPL v2
+LazyData: true
