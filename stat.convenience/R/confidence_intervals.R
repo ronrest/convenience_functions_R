@@ -4,7 +4,7 @@
 #' Confidence region for a binomial Distribution. 
 #' 
 #' @param size int. number of trials for the binomial distribution.
-#' @param p numeric. probability of success per trial
+#' @param prob numeric. probability of success per trial
 #' @param type string. type of hypothesis test taken. 
 #'        "equal" (Default) for two tailed test
 #'        "less" for one-tailed test where alternative hypotheis is 'less than'
@@ -17,7 +17,7 @@
 #' cbinom(size=15, p=0.9, type="less", conf=0.95)
 #' cbinom(size=30, p=0.4, type="more", conf=0.90)
 #' @export
-cbinom <- function(size=1, p=0.5, type="equal", conf=0.95){
+cbinom <- function(size=1, prob=0.5, type="equal", conf=0.95){
     # Account for the different types of cutoff quantiles
     alpha = 1 - conf
     if (type == "less"){
@@ -32,8 +32,8 @@ cbinom <- function(size=1, p=0.5, type="equal", conf=0.95){
     }
     
     # calculate the cutoff points
-    cutoff_lower = qbinom(p_lower, size=size, prob=p, lower.tail=TRUE)
-    cutoff_upper = qbinom(p_upper, size=size, prob=p, lower.tail=TRUE)
+    cutoff_lower = qbinom(p_lower, size=size, prob=prob, lower.tail=TRUE)
+    cutoff_upper = qbinom(p_upper, size=size, prob=prob, lower.tail=TRUE)
     
     return(c(cutoff_lower, cutoff_upper))
 }
