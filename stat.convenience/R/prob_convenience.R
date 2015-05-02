@@ -1,6 +1,15 @@
-source("~/programming/R/projects/convenience/plot_convenience.R")
-source("~/programming/R/projects/convenience/fancyprint.R")
+library("plot.convenience")
+library("fancyprint")
 
+#' coinflipper
+#' 
+#' simulates coin flips
+#' 
+#' @param n.flips
+#' @param n.success
+#' @param p 
+#' 
+#' @export
 coinflipper <- function(n.flips=1, n.success=1, p=0.5){
     # Flips a coin multiple times, and it:
     # - plots a distribution plot for n number of flips
@@ -24,7 +33,7 @@ coinflipper <- function(n.flips=1, n.success=1, p=0.5){
     print("===================================================================")
 }
 
-
-#source("~/programming/R/projects/convenience/prob_convenience.R")
-#coinflipper(n.flips=9, n.success=2, p=0.5)
-
+# 
+# #source("~/programming/R/projects/convenience/prob_convenience.R")
+# #coinflipper(n.flips=9, n.success=2, p=0.5)
+# 
