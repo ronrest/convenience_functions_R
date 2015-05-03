@@ -150,7 +150,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x_max = qpois(p.upper, lambda=mean)
         x = x_min:x_max
         y = dpois(x, lambda=mean)
-        title = sprintf("Poisson Distribution with\n lambda=%.2f", mean)
+        title = sprintf("Poisson Distribution with\n lambda=%d", mean)
         if (!primary){
             warning("Secondary plotting is not yet implemented for poisson ",
                     "distribution")
@@ -220,9 +220,6 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 # Plot Common Distributions
 #plot_distribution("normal", mean=100, sd=15)
 #plot_distribution("poisson", mean=100)
-#plot_distribution("poisson", mean=0.1)
-#plot_distribution("normal", mean=0.40, sd=0.1)
-
 #plot_distribution("binomial", n=3, p=0.5)
 #plot_distribution("binomial", n=500, p=0.01)
 #plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
