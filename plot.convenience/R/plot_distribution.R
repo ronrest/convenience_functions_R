@@ -152,7 +152,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #                                              Handle Poisson Distribution
     #-------------------------------------------------------------------------
     else if (dist=="poisson"){
-        if (is.na(mean)){ mean = 1} 
+        if (is.na(mean)){ mean = 1}
+        mean = round(mean)                     # removes any fractional components
         x_min = qpois(p.lower, lambda=mean)
         x_max = qpois(p.upper, lambda=mean)
         x = x_min:x_max
