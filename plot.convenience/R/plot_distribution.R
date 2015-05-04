@@ -68,6 +68,9 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
     #       calculate how the variance should be plotted at that scale. 
     # TODO: scale the resolution of poisson distributions (and perhaps binomial) 
     #       so that there isnt a ridiculous amount of bars for large numbers. 
+    # TODO: add option "lambda" for poisson distribution. It makes using poisson 
+    #       more intuitive. You can still use mean if you like, but if you 
+    #       include both, then lambda takes presedence. 
     # TODO: Check the data types of the inputs
     # TODO: Add option to draw exponential distribution using either lambda OR 
     #       the mean (where mean = 1/lambda) or sd (sd=1/lambda). But give
