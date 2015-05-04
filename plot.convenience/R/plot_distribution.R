@@ -64,6 +64,10 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
                               primary=TRUE, p.lower=0.0001, p.upper=0.9999, ...){
     
     #===========================================================================
+    # TODO: give option to centre t-test at mean (instead of just 0) and 
+    #       calculate how the variance should be plotted at that scale. 
+    # TODO: scale the resolution of poisson distributions (and perhaps binomial) 
+    #       so that there isnt a ridiculous amount of bars for large numbers. 
     # TODO: Check the data types of the inputs
     # TODO: Add option to draw exponential distribution using either lambda OR 
     #       the mean (where mean = 1/lambda) or sd (sd=1/lambda). But give
