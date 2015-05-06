@@ -5,10 +5,10 @@
 #' @param size int. number of trials for the binomial distribution.
 #' @param prob numeric. probability of success per trial
 #' @param type string. type of hypothesis test taken. 
-#'        "equal" (Default) for two tailed test
-#'        "less" for one-tailed test where alternative hypotheis is 'less than'
-#'        "more" for one-tailed test where alternative hypotheis is 'more than'
-#'        "greater" same as "more"
+#'        - for two tailed test use "equal" (Default)  or "="
+#'        - for one-tailed lower tail test use "less" or "<" 
+#'        - for one-tailed upper tail test use "more" or "greater" or "higher" 
+#'          or ">" 
 #' @param conf confidence interval used
 #' @return a vector with two values representing the lower and upper points that 
 #'         fit within your confidence interval.
@@ -20,13 +20,14 @@
 cbinom <- function(size=1, prob=0.5, type="equal", conf=0.95){
     # Account for the different types of cutoff quantiles
     alpha = 1 - conf
-    if (type == "less"){
+    if ((type == "less") | (type == "<")){
         p_lower = alpha
         p_upper = 1.0
-    } else if ((type == "more") | (type == "greater")){
+    } else if ((type == "more") | (type == "greater") | (type == "higher") 
+               | (type == ">")){
         p_lower = 0.0
         p_upper = conf
-    } else if (type == "equal"){
+    } else if ((type == "equal") | (type == "=")){
         p_lower= alpha/2
         p_upper = 1 - (alpha/2)
     }
