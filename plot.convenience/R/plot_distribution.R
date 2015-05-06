@@ -183,6 +183,8 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = dbinom(x, n,prob=p)
         title = sprintf("Binomial Distribution with\n n=%d and p=%.3f", n, p)
         if (!primary){
+            # TODO: secondary plotting can be implemented using add=TRUE 
+            #       argument of barplot()
             warning("Secondary plotting is not yet implemented for binomial ",
                     "distribution")
         } else {
