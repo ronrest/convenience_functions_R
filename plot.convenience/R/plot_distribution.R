@@ -1,3 +1,5 @@
+library("stat.convenience")
+
 #' plot_distribution
 #' 
 #' Plots what a particular distribution looks like given parameters such as 
@@ -38,6 +40,13 @@
 #' @param primary   boolean. Whether to plot as primary plot using plot() or 
 #'                  append to an exisitng plot using points()
 #'                  DEFAULT = TRUE
+#' @param conf      float. confidence interval (eg 0.95). if NA, then no 
+#'                  confidence interval is used.  
+#'                  DEFAULT = NA
+#' @param conf.type "less" for confidence interval when doing a lower tail test 
+#'                  "more" for confidence interval when doing an upper tail test 
+#'                  "equal" for double sided tests.
+#'                  DEFAULT = "equal"
 #' @param show.mean Show a vertical line highlihgting mean of the distribution?
 #'                  DEFAULT = TRUE
 #' @param  p.lower  numeric. A quantile used to calculate the lower end of the 
@@ -61,7 +70,8 @@
 #' @export
 plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA, 
                               df2=NA, rate=NA, res=100, return.df=FALSE, 
-                              primary=TRUE, p.lower=0.0001, p.upper=0.9999, ...){
+                              primary=TRUE, conf=0.95, conf.type="equal", 
+                              p.lower=0.0001, p.upper=0.9999, ...){
     
     #===========================================================================
     # TODO: give option to centre t-test at mean (instead of just 0) and 
@@ -188,7 +198,14 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
             warning("Secondary plotting is not yet implemented for binomial ",
                     "distribution")
         } else {
-            barplot(y, names.arg=x, main=title, ...)
+            if (!is.na(conf.type)){
+                title = sprintf("Binomial Distribution with\n n=%d and p=%.3f and confidence interval of %.3f", n, p, conf)
+                CI = cbinom(size=n, prob=p, type=conf.type, conf=conf)
+                shade_between_bars(x, y, lower=CI[1], upper=CI[2], 
+                                   shade.col="green", main=title, ...)    
+            } else {
+                barplot(y, names.arg=x, main=title, ...)
+            }
         }
         # TODO: Find an alternative to abline that actually places a vertical 
         #       line in the correct position when using in conjunction with 
