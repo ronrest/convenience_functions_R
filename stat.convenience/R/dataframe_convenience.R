@@ -1,6 +1,9 @@
 # A subset of functions belonging to the stat.convenience package that deal with 
 # common or useful dataframe operations. 
 
+# TODO: Add a function na.mean() which returns a copy of the dataframe but with 
+#       NAs replaced with the mean of that column. 
+
 require("fancyprint")
 
 #' na.summary
