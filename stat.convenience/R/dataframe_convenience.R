@@ -70,4 +70,32 @@ na.summary <- function(df, lineup=TRUE){
 }
 
 
+#' no.nas
+#' 
+#' Returns a copy of a dataframe which has all rows containing NAs removed. 
+#' 
+#' @param df (dataframe) The dataframe you want to clean up. 
+#' @examples
+#' # Create a dataframe
+#' a = c(11,NA,13,14,15,16,17,18,19)
+#' b = c(21,22,NA,24,25,26,27,28,29)
+#' c = c(31,32,33,34,35,36,NA,NA,NA)
+#' d = c(NA,42,43,44,45,46,47,48,49)
+#' df = data.frame(a,b,c,d)
+#' 
+#' # return only the rows with no NAs in it
+#' no.nas(df)
+#' 
+#' # Result is
+#' # a  b  c  d
+#' # 4 14 24 34 44
+#' # 5 15 25 35 45
+#' # 6 16 26 36 46
+#' 
+#' @author Ronny Restrepo
+#' @export
+no.nas <- function(df){
+    return(df[complete.cases(df),])
+}
+
 

@@ -3,3 +3,4 @@
 export(cbinom)
 export(coinflipper)
 export(na.summary)
+export(no.nas)
