@@ -32,6 +32,8 @@
 #' @author Ronny Restrepo
 #' @export
 lm2 <- function(x, y, print.summary=TRUE){
+    # TODO: make this actually return a class, with methods, instead of a list 
+    #       One of the methods should be to print the summary.
     info = list()      # Store all the information in a list
     colspan = 45       # Used to line up printed values (fill amount in printkv)
     
