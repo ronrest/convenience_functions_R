@@ -2,5 +2,6 @@
 
 export(cbinom)
 export(coinflipper)
+export(lm2)
 export(na.summary)
 export(no.nas)
