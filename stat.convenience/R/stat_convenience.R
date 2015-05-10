@@ -70,6 +70,11 @@ lm2 <- function(x, y, print.summary=TRUE){
     info$mean.x = mean.x
     info$mean.y = mean.y
     
+    # Standard Deviations of each variable
+    info$sd.x = sd(x)
+    info$sd.y = sd(y)
+    
+    
     # Correlation and Covariance Information
     info$cor = cor(x, y)
     
@@ -78,8 +83,11 @@ lm2 <- function(x, y, print.summary=TRUE){
     info$rot_is_significant = abs(info$cor) > info$rot_significance
     
     # Slope and intercept information
-    info$slope = sum((x - mean.x)*(y - mean.y)) / sum((x - mean.x)^2)
-    info$intercept = mean.y - (info$slope * mean.x)
+    #info$slope = sum((x - mean.x)*(y - mean.y)) / sum((x - mean.x)^2)
+    #info$intercept = mean.y - (info$slope * mean.x)
+    # Use an alternative formula that makes use of already calculated values. 
+    info$slope = info$cor *  info$sd.y / info$sd.x
+    info$intercept = info$mean.y - info$slope * info$mean.y
     
     # Sum of Squares information 
     info$SST = sum((y - mean.y)^2)  # Total Sum of Squares
@@ -104,6 +112,10 @@ lm2 <- function(x, y, print.summary=TRUE){
         printkv("Mean of independent variable", info$mean.x, 
                 fill=colspan, fill_char=".")
         printkv("Mean of dependent variable", info$mean.y, 
+                fill=colspan, fill_char=".")
+        printkv("SD of independent variable", info$sd.x, 
+                fill=colspan, fill_char=".")
+        printkv("SD of dependent variable", info$sd.y, 
                 fill=colspan, fill_char=".")
         printkv("Correlation (Pearson, using 'everything')", info$cor, 
                 fill=colspan, fill_char=".")
