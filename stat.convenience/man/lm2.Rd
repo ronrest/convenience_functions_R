@@ -16,18 +16,38 @@ lm2(x, y, print.summary = TRUE)
 }
 \value{
 a list of values:
+
      $n
+
      $mean.x
+
      $mean.y
+
+     $sd.x
+
+     $sd.y
+
      $cor
+
      $rot_significance
+
      $rot_is_significant
+
      $slope
+
      $intercept
-     $SSE_using_mean
-     $SSE_using_model
-     $MSE_using_mean
-     $MSE_using_model
+
+     $SST                # Total Sum of Squared Errors (using mean of y)
+
+     $SSE                # Sum of Squared Errors in the Model
+
+     $SSR                # Sum of Squared Errors due to Regression
+
+     $MST                # Total Mean Squared Errors (using mean of y)
+
+     $MSE                # Mean Squared Errors in the model
+
+     $cod                # Coefficient of Determination
 }
 \description{
 Creates a list of information needed for creating a linear model, along with

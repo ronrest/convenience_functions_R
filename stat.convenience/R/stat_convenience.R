@@ -8,18 +8,38 @@
 #' @param print.summary (boolean) Should it print a summary? 
 #'          (DEFAULT = TRUE) 
 #' @return a list of values:
+#' 
 #'      $n
+#'      
 #'      $mean.x
+#'      
 #'      $mean.y
+#'      
+#'      $sd.x
+#'      
+#'      $sd.y
+#'      
 #'      $cor
+#'      
 #'      $rot_significance
+#'      
 #'      $rot_is_significant
+#'      
 #'      $slope
+#'      
 #'      $intercept
-#'      $SSE_using_mean
-#'      $SSE_using_model
-#'      $MSE_using_mean
-#'      $MSE_using_model
+#'      
+#'      $SST                # Total Sum of Squared Errors (using mean of y)
+#'      
+#'      $SSE                # Sum of Squared Errors in the Model
+#'      
+#'      $SSR                # Sum of Squared Errors due to Regression
+#'      
+#'      $MST                # Total Mean Squared Errors (using mean of y)
+#'      
+#'      $MSE                # Mean Squared Errors in the model
+#'      
+#'      $cod                # Coefficient of Determination
 #' @examples
 #' lm2(x, y)
 #' lm2(x, y, print.summary=FALSE)
@@ -62,12 +82,16 @@ lm2 <- function(x, y, print.summary=TRUE){
     info$intercept = mean.y - (info$slope * mean.x)
     
     # Sum of Squares information 
-    info$SSE_using_mean = sum((y - mean.y)^2)
-    info$SSE_using_model = sum(((y - mean.y) - (x - mean.x)*info$slope)^2)
+    info$SST = sum((y - mean.y)^2)  # Total Sum of Squares
+    info$SSE = sum(((y - mean.y) - (x - mean.x)*info$slope)^2) # SSE of regression model
+    info$SSR = info$SST - info$SSE  # Sum of Squares due to regression
     
     # Mean Squared Error information 
-    info$MSE_using_mean = info$SSE_using_mean / info$n
-    info$MSE_using_model = info$SSE_using_model / info$n
+    info$MST = info$SST / info$n
+    info$MSE = info$SSE / info$n
+    
+    # Coefficient of Determination
+    info$cod = info$SSR / info$SST 
     
     if (print.summary){
         print("===============================================================")
@@ -89,13 +113,17 @@ lm2 <- function(x, y, print.summary=TRUE){
                 fill=colspan, fill_char=".")
         printkv("Slope", info$slope, fill=colspan, fill_char=".")
         printkv("Intercept", info$intercept, fill=colspan, fill_char=".")
-        printkv("Sum of Squared Errors (using mean)", info$SSE_using_mean, 
+        printkv("Total Sum of Squared Errors (using mean of y)", info$SST, 
                 fill=colspan, fill_char=".")
-        printkv("Sum of Squared Errors (using model)", info$SSE_using_model, 
+        printkv("Sum of Squared Errors (in the model)", info$SSE, 
                 fill=colspan, fill_char=".")
-        printkv("Mean Squared Errors (using mean)", info$MSE_using_mean, 
+        printkv("Sum of Squared Errors (due to regression)", info$SSR, 
                 fill=colspan, fill_char=".")
-        printkv("Mean Squared Errors (using model)", info$MSE_using_model, 
+        printkv("Total Mean Squared Errors (using mean)", info$MST, 
+                fill=colspan, fill_char=".")
+        printkv("Mean Squared Errors in the model", info$MSE, 
+                fill=colspan, fill_char=".")
+        printkv("Coefficient of Determination", info$cod, 
                 fill=colspan, fill_char=".")
         print("_______________________________________________________________")
     }
