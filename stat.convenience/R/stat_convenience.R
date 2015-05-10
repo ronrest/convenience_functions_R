@@ -87,7 +87,7 @@ lm2 <- function(x, y, print.summary=TRUE){
     #info$intercept = mean.y - (info$slope * mean.x)
     # Use an alternative formula that makes use of already calculated values. 
     info$slope = info$cor *  info$sd.y / info$sd.x
-    info$intercept = info$mean.y - info$slope * info$mean.y
+    info$intercept = info$mean.y - info$slope * info$mean.x
     
     # Sum of Squares information 
     info$SST = sum((y - mean.y)^2)  # Total Sum of Squares
