@@ -176,3 +176,30 @@ wmean <- function(x, w=NA){
     }
     return(sum(x*w) / sum(w))
 }
+
+
+# ==============================================================================
+#                                                                      NORMALIZE 
+# ==============================================================================
+#' normalize
+#' 
+#' Takes a vector of numerics, and normalizes the data so that we end up with a 
+#' mean of 0 and standard deviation of 1. 
+#' 
+#' @param x (vector of numerics) The values  
+#' @return (numeric) the weighted mean
+#' @examples
+#' x = c(12,14,11,16)
+#' x.norm = normalize(x)
+#' x.norm        # -0.5637345  0.3382407 -1.0147221  1.2402159
+#' mean(x.norm)  # 0
+#' sd(x.norm)    # 1
+#' 
+#' @author Ronny Restrepo
+#' @export
+normalize <- function(x){
+    # TODO: Add option to handle NAs. 
+    return((x - mean(x)) / sd(x))
+}
+
+
