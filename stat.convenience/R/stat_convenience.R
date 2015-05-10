@@ -1,3 +1,6 @@
+# ==============================================================================
+#                                                                            LM2 
+# ==============================================================================
 #' lm2
 #' 
 #' Creates a list of information needed for creating a linear model, along with 
@@ -144,5 +147,32 @@ lm2 <- function(x, y, print.summary=TRUE){
 
 
 
-
-
+# ==============================================================================
+#                                                                          WMEAN 
+# ==============================================================================
+#' wmean
+#' 
+#' Calculatest the weighted mean from a vector of values (x) and a vector of 
+#' corresponding weights (w) for each of the elements in x.   
+#' 
+#' @param x (vector of numerics) The values  
+#' @param w (vector of numerics) The corresponding weights
+#' 
+#'          If NA, then it defaults to weights of 1. 
+#'          
+#'          (DEFAULT = NA = weights of 1)
+#' @return (numeric) the weighted mean
+#' @examples
+#' x = c(3.5, 5.2, 2.7, 4.2)
+#' weights = c(1, 2, 1, 6)
+#' wmean(x, weights)        # 4.18
+#' mean(x)                  # 3.9 
+#' 
+#' @author Ronny Restrepo
+#' @export
+wmean <- function(x, w=NA){
+    if (is.na(w[1])){
+        w = rep(1,length(x))
+    }
+    return(sum(x*w) / sum(w))
+}
