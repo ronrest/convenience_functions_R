@@ -184,9 +184,18 @@ wmean <- function(x, w=NA){
 #' normalize
 #' 
 #' Takes a vector of numerics, and normalizes the data so that we end up with a 
-#' mean of 0 and standard deviation of 1. 
+#' mean of 0 and standard deviation of 1. By default it uses the mean and 
+#' standard deviation of the data you feed in as "x". However, if you are trying 
+#' to normalize new data to an existing normalized data set, then you have the 
+#' option to specify a different mean and standard deviation.
 #' 
-#' @param x (vector of numerics) The values  
+#' @param x (vector of numerics) The values 
+#' @param mean (numeric) (optional) Normalize to a mean other than the mean 
+#'        of x. 
+#'        
+#'        (DEFAULT = NA)
+#' @param sd (numeric) (optional) Normalize to a standard deviation other than
+#'        the standard deviation of x.
 #' @return (numeric) the weighted mean
 #' @examples
 #' x = c(12,14,11,16)
@@ -195,11 +204,24 @@ wmean <- function(x, w=NA){
 #' mean(x.norm)  # 0
 #' sd(x.norm)    # 1
 #' 
+#' 
+#' x = c(12,14,11,16)
+#' x.norm = normalize(x, mean=10, sd=2)
+#' x.norm        #  1.0 2.0 0.5 3.0
+#' 
 #' @author Ronny Restrepo
 #' @export
-normalize <- function(x){
-    # TODO: Add option to handle NAs. 
-    return((x - mean(x)) / sd(x))
+normalize <- function(x, mean=NA, sd=NA){
+    # TODO: Add option to handle NAs.
+    if (is.na(mean)){
+        mean = mean(x)
+    }
+    if (is.na(sd)){
+        sd = sd(x)
+    }
+    return((x - mean) / sd)
 }
+
+
 
 

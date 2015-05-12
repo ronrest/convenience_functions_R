@@ -4,17 +4,28 @@
 \alias{normalize}
 \title{normalize}
 \usage{
-normalize(x)
+normalize(x, mean = NA, sd = NA)
 }
 \arguments{
 \item{x}{(vector of numerics) The values}
+
+\item{mean}{(numeric) (optional) Normalize to a mean other than the mean
+       of x.
+
+       (DEFAULT = NA)}
+
+\item{sd}{(numeric) (optional) Normalize to a standard deviation other than
+the standard deviation of x.}
 }
 \value{
 (numeric) the weighted mean
 }
 \description{
 Takes a vector of numerics, and normalizes the data so that we end up with a
-mean of 0 and standard deviation of 1.
+mean of 0 and standard deviation of 1. By default it uses the mean and
+standard deviation of the data you feed in as "x". However, if you are trying
+to normalize new data to an existing normalized data set, then you have the
+option to specify a different mean and standard deviation.
 }
 \examples{
 x = c(12,14,11,16)
@@ -22,6 +33,11 @@ x.norm = normalize(x)
 x.norm        # -0.5637345  0.3382407 -1.0147221  1.2402159
 mean(x.norm)  # 0
 sd(x.norm)    # 1
+
+
+x = c(12,14,11,16)
+x.norm = normalize(x, mean=10, sd=2)
+x.norm        #  1.0 2.0 0.5 3.0
 }
 \author{
 Ronny Restrepo
