@@ -213,6 +213,9 @@ wmean <- function(x, w=NA){
 #' @export
 normalize <- function(x, mean=NA, sd=NA){
     # TODO: Add option to handle NAs.
+    # TODO: Add ability to handle dataframes and matrices
+    # TODO: Add option to chose direction to normalize along dataframes and 
+    #       matrices. If to do it along columns or rows, or across both. 
     if (is.na(mean)){
         mean = mean(x)
     }
