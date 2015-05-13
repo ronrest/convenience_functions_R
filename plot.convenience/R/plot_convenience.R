@@ -22,57 +22,64 @@ shade_before <- function(x, y, boundary, ...){
     shade_between(x, y, lower, boundary)
 }
 
-shade_between <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
+
+# ==============================================================================
+#                                                                  SHADE BETWEEN
+# ==============================================================================
+#' shade_between
+#' 
+#' Creates a plot which shades the area under the curve between "lower" and 
+#' "upper" points along x. 
+#' 
+#' Note, that depending on the resolution of the x points, you may not 
+#' actually get the shaded region in the exact upper and lower points you 
+#' specified. The edges of the shaded region will snap to the closest value 
+#' that is actually in the x vector.
+#' 
+#' @param  x (vector) x coordinates of the plot
+#' @param  y (vector) y coordinates of the plot
+#' @param  lower (numeric) lower point (Output snaps to closest element that is 
+#'          actually in x)
+#' @param  upper (numeric) uppper point (Output snaps to closest element that is 
+#'          actually in x)
+#' @param primary (logical) Should it plot as a new plot (TRUE), or 
+#'          overlay on top of an existing plot (FALSE)
+#'          
+#'          (DEFAULT = TRUE)
+#' @param  shade.col (string) color to fill in the shaded area.
+#' @param  shade.border (string, NA, NULL, logical) the color to draw the border. 
+#'          The default,  NULL, means to use par("fg"). 
+#'          
+#'          Use border = NA to omit borders.
+#'          
+#'          For compatibility with S, border can also be logical, in 
+#'          which case FALSE is equivalent to NA (borders omitted) 
+#'          
+#'          TRUE is equivalent to NULL (use foreground colour)
+#' @param  shade.lty (string) the line type to be used for the shaded area
+#' 
+#' @param  shade.density (numeric) the density of shading lines, in lines per 
+#'          inch. The  default value of NULL means that no shading lines are 
+#'          drawn. A zero value of density means no shading nor 
+#'          filling whereas negative values and NA suppress shading 
+#'          (and so allow color filling).
+#' 
+#' @param  shade.angle (integer) the slope of shading lines, given as an angle 
+#'          in degrees (counter-clockwise).
+#' @param  ... aditional parameters for the plot, such as type, lty, etc
+#' 
+#' @examples 
+#'    # Shades between -5 and -2 in a bell curve
+#'    x = seq(-9,9,by=0.01)
+#'    y = dnorm(x, mean=0, sd=3)
+#'    shade_between(x,y,-5,-2, type="l", lwd=3, shade.density=20)
+#' @export
+shade_between <- function(x,y, lower, upper, primary=TRUE, shade.col="red", 
+                          shade.border=NULL, 
                           shade.lty=par("lty"), shade.density=NULL, 
                           shade.angle=45, ...){
-    #===========================================================================
-    #                                                              SHADE BETWEEN
-    #===========================================================================
-    # Creates a plot which shades the area under the curve between "lower" and 
-    # "upper" points along x. 
-    # 
-    # Note, that depending on the resolution of the x points, you may not 
-    # actually get the shaded region in the exact upper and lower points you 
-    # specified. The edges of the shaded region will snap to the closest value 
-    # that is actually in the x vector.
-    # 
-    # ARGS: 
-    #   x     : vec x coordinates of the plot
-    #   y     : vec y coordinates of the plot
-    #   lower : lower point (Output snaps to closest element that is actually in x)
-    #   upper : lower point (Output snaps to closest element that is actually in x)
-    #
-    # OPTIONAL ARGS: 
-    #   shade.col     : color to fill in the shaded area.
-    #   shade.border : the color to draw the border. The default, NULL, means to 
-    #                  use par("fg"). Use border = NA to omit borders.
-    #                  
-    #                  For compatibility with S, border can also be logical, in 
-    #                  which case FALSE is equivalent to NA (borders omitted) 
-    #                  and TRUE is equivalent to NULL (use foreground colour)
-    #   shade.lty     : the line type to be used for the shaded area
-    # 
-    #   shade.density : the density of shading lines, in lines per inch. The 
-    #                   default value of NULL means that no shading lines are 
-    #                   drawn. A zero value of density means no shading nor 
-    #                   filling whereas negative values and NA suppress shading 
-    #                   (and so allow color filling).
-    # 
-    #   shade.angle	  : the slope of shading lines, given as an angle in degrees
-    #                   (counter-clockwise).
-    #   ...         : aditional parameters for the plot, such as type, lty, etc
-    # 
     # TODO: include an argument direction, to specify if the upper/lower points 
     #       should be along the vertical or horizontal direction
-    #
-    # EXAMPLES:
-    # 
-    #    # Shades between -5 and -2 in a bell curve
-    #    x = seq(-9,9,by=0.01)
-    #    y = dnorm(x, mean=0, sd=3)
-    #    shade_between(x,y,-5,-2, type="l", lwd=3, shade.density=20)
-    #
-    #===========================================================================
     
     #-------------------------------------------------------------------------
     #                                                                    Setup
@@ -96,7 +103,9 @@ shade_between <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
     #                                                                  Plot it
     #-------------------------------------------------------------------------
     #preliminary plot to get the axes drawn
-    plot(x,y, ...)
+    if (primary){
+        plot(x,y, ...)
+    }
     
     # The sahded region
     polygon(x2,y2,col=shade.col, border=shade.border, lty=shade.lty, 
