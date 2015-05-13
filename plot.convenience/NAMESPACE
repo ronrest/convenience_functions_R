@@ -2,3 +2,4 @@
 
 export(plot_distribution)
 export(plot_residuals)
+export(shade_between)
