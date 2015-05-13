@@ -1,7 +1,12 @@
+# TODO: add a function plot.cols() which plots either a histogram or boxwhisker 
+#       plot, or density plot, of the data in each column of a dataframe as a 
+#       cell in a multi-grid set of plots. 
+
 
 library(Hmisc)  # Used for floating point matches
 #TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
 #      secondary libraries which slow load time.
+
 
 shade_after <- function(x, y, boundary, ...){
     # Shades area under the curve from boundary to values of x that are higher.
