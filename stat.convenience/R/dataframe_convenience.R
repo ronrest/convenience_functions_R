@@ -6,6 +6,9 @@
 
 require("fancyprint")
 
+# ==============================================================================
+#                                                                     NA.SUMMARY
+# ==============================================================================
 #' na.summary
 #' 
 #' Prints a summary of NAs that exist in the dataframe. 
@@ -72,7 +75,9 @@ na.summary <- function(df, lineup=TRUE){
     
 }
 
-
+# ==============================================================================
+#                                                                         NO.NAS
+# ==============================================================================
 #' no.nas
 #' 
 #' Returns a copy of a dataframe which has all rows containing NAs removed. 
@@ -101,4 +106,45 @@ no.nas <- function(df){
     return(df[complete.cases(df),])
 }
 
+
+# ==============================================================================
+#                                                                 FILTER.COLUMNS
+# ==============================================================================
+#' filter.columns
+#' 
+#' Returns a copy of a dataframe which filters for, or filters out, only the 
+#' columns that fit some regular expression pattern. You can chose if the 
+#' columns that match the pattern should be the ones returned, or if they are 
+#' the ones that should be excluded. 
+#' 
+#' @param x (dataframe) The dataframe you want to filter.
+#' @param pattern (string) A regular expression.
+#' @param exclude (logical) Should the columns matching the pattern be filtered 
+#'        out? If TRUE, then it returns all columns except the ones matching the 
+#'        pattern.. If FALSE, then it returns only the columns that match.
+#'        
+#'         (DEFAULT = FALSE) 
+#' @param ...  aditional parameters to be passed on to grep()
+#' @examples
+#' 
+#' # Returns only the columns that start with "Petal"
+#' data(iris)
+#' filter.columns(iris, "^Petal")
+#' 
+#' # Filters out the columns that start with "Petal"
+#' filter.columns(iris, "^Petal", exclude=TRUE)
+#' 
+#' @author Ronny Restrepo
+#' @export
+filter.columns <- function(x, pattern, exclude=FALSE, ...){
+    # Columns matching the pattern
+    cols = grep(pattern, names(x), ...) 
+    
+    # decide if to exclude those columns, or the keep them
+    if (exclude){
+        return(x[, -cols])
+    } else {
+        return(x[, cols])
+    }
+}
 
