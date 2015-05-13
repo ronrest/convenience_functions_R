@@ -5,7 +5,10 @@ library("stat.convenience")
 # ==============================================================================
 #' plot_distribution
 #' 
-#' Plots what a particular distribution looks like given parameters such as 
+#' Plots what a particular distribution looks like. You can also get it to plot 
+#' a confidence interval for that distribution. 
+#' 
+#' Plots what a particular distribution looks like given parameters such as: 
 #' 
 #' - mean and standard deviation (for normal distribution).
 #' 
@@ -16,6 +19,10 @@ library("stat.convenience")
 #' - df and df2 (for f distribution)
 #' 
 #' - mean (for poisson distribution)
+#' 
+#' You can also specify if you want to plot a shaded confidence interval. For 
+#' example, by setting conf=0.95 and  conf.type="<" you can shade the 95% 
+#' confidence interval on a lower tailed test. 
 #' 
 #' @param dist (string) "normal" "poisson" "binomial" "t" "f" "exp" determines the   
 #'             distribution to use.
@@ -66,11 +73,13 @@ library("stat.convenience")
 #'              confidence interval is used.  
 #'              
 #'              DEFAULT = NA
-#' @param conf.type (string) "less" for confidence interval when doing a lower tail test 
+#' @param conf.type (string) "less" or "<" for a lower tail test confidence 
+#'              interval 
 #'                  
-#'              "more" for confidence interval when doing an upper tail test 
+#'              - for upper tail confidence interval test use "more" or ">" or 
+#'              "greater" 
 #'                  
-#'              "equal" for double sided tests.
+#'              - "equal" or "=" for double sided tests.
 #'              
 #'              DEFAULT = "equal"
 #' @param show.mean (logical) Show a vertical line highlihgting mean of the distribution?
@@ -92,6 +101,7 @@ library("stat.convenience")
 #' plot_distribution("normal", mean=50, sd=15)
 #' plot_distribution("binomial", n=15, p=0.9)
 #' plot_distribution("t", df=12)
+#' plot_distribution("t", df=10, conf=0.95, conf.type = "<")
 #' plot_distribution("exp", rate=0.2)
 #' plot_distribution("f", df=10, df2=100)
 #' plot_distribution("poisson", mean=50)
@@ -144,12 +154,20 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         x_max = qt(p.upper, df=df)
         x = seq(x_min, x_max, by=(x_max-x_min)/res)
         y = dt(x, df=df)
-        title = sprintf("t Distribution with\n df = %.2f", df)
-        if (primary){
-            plot(x,y, type="l", main=title, ...)
+        
+        # Should it plot a confidence interval?
+        if (!is.na(conf.type)){
+            title = sprintf("t Distribution with\n df = %.2f and confidence interval of %.3f", df, conf)
+            CI = ct(df=df, type=conf.type, conf=conf)
+            shade_between(x, y, lower=CI[1], upper=CI[2], primary=primary,  
+                          type="l", shade.col="green", main=title, ...)    
+        } else if (primary){
+            title = sprintf("t Distribution with\n df = %.2f", df)
+            plot(x,y, type="l", main=title, ...)    
         } else {
             points(x,y, type="l", ...)
         }
+        
         abline(v=qt(0.5, df=df), col="red")
     } 
     #-------------------------------------------------------------------------
@@ -280,6 +298,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
 #plot_distribution("binomial", n=500, p=0.01)
 #plot_distribution("normal", mean=100, sd=15, p.lower=0.25, p.upper=0.75)
 
+#plot_distribution("t", df=5, conf=0.60, conf.type = "=", primary=TRUE)
 #plot_distribution("t", df=3)
 #plot_distribution("f", df=10, df2=100)
 #plot_distribution("exp", rate=3)

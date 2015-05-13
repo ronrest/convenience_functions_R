@@ -10,83 +10,120 @@ plot_distribution(dist = "normal", mean = NA, sd = NA, n = NA, p = NA,
   p.upper = 0.9999, ...)
 }
 \arguments{
-\item{dist}{"normal" "poisson" "binomial" "t" "f" "exp" determines the
+\item{dist}{(string) "normal" "poisson" "binomial" "t" "f" "exp" determines the
 distribution to use.}
 
-\item{mean}{numeric. The mean of the distribution. If using poisson, this
-is ths lambda value.
-DEFAULT = 0 if using normal distribution.
-DEFAULT = 1 if using poisson distribution.}
+\item{mean}{(numeric) The mean of the distribution. If using poisson, this
+            is ths lambda value.
 
-\item{sd}{Standard deviation.
-DEFAULT = 1}
+            DEFAULT = 0 if using normal distribution.
 
-\item{n}{int. Used when dealing with binomial distribution. The number
-of times we run the binomial event, eg flip a coin.
-DEFAULT: 1}
+            DEFAULT = 1 if using poisson distribution.}
 
-\item{p}{numeric. probability of success when using binomial
-deistribution
-DEFAULT: 0.5}
+\item{sd}{(numeric) Standard deviation.
 
-\item{df}{Degrees of Freedom when using t distribution.
-Or the first degrees of freedom when using f distribution
-DEFAULT = 1   (if "t" distribution chosen)
-DEFAULT = 10  (if "f" distribution chosen)}
+            DEFAULT = 1}
 
-\item{df2}{Second degrees of freedom when using f distribution
-DEFAULT = 100}
+\item{n}{(integer) Used when dealing with binomial distribution. The number
+            of times we run the binomial event, eg flip a coin.
+
+            DEFAULT: 1}
+
+\item{p}{(numeric) probability of success when using binomial
+            deistribution
+
+            DEFAULT: 0.5}
+
+\item{df}{(integer) Degrees of Freedom when using t distribution.
+
+            Or the first degrees of freedom when using f distribution
+
+            DEFAULT = 1   (if "t" distribution chosen)
+
+            DEFAULT = 10  (if "f" distribution chosen)}
+
+\item{df2}{(integer) Second degrees of freedom when using f distribution
+
+            DEFAULT = 100}
 
 \item{rate}{Used for exponential Distribution
-DEFAULT = 1}
 
-\item{res}{integer. Resolution of the plot (measured as the number of
-data points along the x axis)
-Not implemented for Poisson distribution yet.
-DEFAULT = 100 if using normal distribution}
+            DEFAULT = 1}
 
-\item{return.df}{should it return a dataframe of the x and y values?
-DEFAULT = FALSE}
+\item{res}{(integer) Resolution of the plot (measured as the number of
+            data points along the x axis)
 
-\item{primary}{boolean. Whether to plot as primary plot using plot() or
-append to an exisitng plot using points()
-DEFAULT = TRUE}
+            Not implemented for Poisson distribution yet.
 
-\item{conf}{float. confidence interval (eg 0.95). if NA, then no
-confidence interval is used.
-DEFAULT = NA}
+            DEFAULT = 100 if using normal distribution}
 
-\item{conf.type}{"less" for confidence interval when doing a lower tail test
-"more" for confidence interval when doing an upper tail test
-"equal" for double sided tests.
-DEFAULT = "equal"}
+\item{return.df}{(logical) should it return a dataframe of the x and y values?
 
-\item{p.lower}{numeric. A quantile used to calculate the lower end of the
-x axis to plot. eg, if a value of 0.25 is used, then the x
-axis will start at the 25th percentile of the distribution.
-DEFAULT = 0.0001}
+             DEFAULT = FALSE}
 
-\item{p.upper}{numeric. quantile used to calculate the upper end of the
-x axis to plot.
-DEFAULT = 0.9999}
+\item{primary}{(logical) Whether to plot as primary plot using plot() or
+             append to an exisitng plot using points()
+
+             DEFAULT = TRUE}
+
+\item{conf}{(numeric) confidence interval (eg 0.95). if NA, then no
+             confidence interval is used.
+
+             DEFAULT = NA}
+
+\item{conf.type}{(string) "less" or "<" for a lower tail test confidence
+             interval
+
+             - for upper tail confidence interval test use "more" or ">" or
+             "greater"
+
+             - "equal" or "=" for double sided tests.
+
+             DEFAULT = "equal"}
+
+\item{p.lower}{(numeric) A quantile used to calculate the lower end of the
+                 x axis to plot. eg, if a value of 0.25 is used, then the x
+                 axis will start at the 25th percentile of the distribution.
+
+                 DEFAULT = 0.0001}
+
+\item{p.upper}{(numeric) quantile used to calculate the upper end of the
+                 x axis to plot.
+
+                 DEFAULT = 0.9999}
 
 \item{...}{other parameters to pass onto the plot}
 
-\item{show.mean}{Show a vertical line highlihgting mean of the distribution?
-DEFAULT = TRUE}
+\item{show.mean}{(logical) Show a vertical line highlihgting mean of the distribution?
+
+             DEFAULT = TRUE}
 }
 \description{
-Plots what a particular distribution looks like given parameters such as
+Plots what a particular distribution looks like. You can also get it to plot
+a confidence interval for that distribution.
+}
+\details{
+Plots what a particular distribution looks like given parameters such as:
+
 - mean and standard deviation (for normal distribution).
+
 - size and p (for binomial distribution)
+
 - df (for t distribution)
+
 - df and df2 (for f distribution)
+
 - mean (for poisson distribution)
+
+You can also specify if you want to plot a shaded confidence interval. For
+example, by setting conf=0.95 and  conf.type="<" you can shade the 95%
+confidence interval on a lower tailed test.
 }
 \examples{
 plot_distribution("normal", mean=50, sd=15)
 plot_distribution("binomial", n=15, p=0.9)
 plot_distribution("t", df=12)
+plot_distribution("t", df=10, conf=0.95, conf.type = "<")
 plot_distribution("exp", rate=0.2)
 plot_distribution("f", df=10, df2=100)
 plot_distribution("poisson", mean=50)
