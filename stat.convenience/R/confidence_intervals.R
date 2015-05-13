@@ -1,3 +1,6 @@
+# ==============================================================================
+#                                                                         CBINOM
+# ==============================================================================
 #' cbinom
 #' 
 #' Confidence region for a binomial Distribution. 
@@ -5,8 +8,11 @@
 #' @param size int. number of trials for the binomial distribution.
 #' @param prob numeric. probability of success per trial
 #' @param type string. type of hypothesis test taken. 
+#'        
 #'        - for two tailed test use "equal" (Default)  or "="
+#'        
 #'        - for one-tailed lower tail test use "less" or "<" 
+#'        
 #'        - for one-tailed upper tail test use "more" or "greater" or "higher" 
 #'          or ">" 
 #' @param conf confidence interval used

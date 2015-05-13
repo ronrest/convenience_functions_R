@@ -12,10 +12,13 @@ cbinom(size = 1, prob = 0.5, type = "equal", conf = 0.95)
 \item{prob}{numeric. probability of success per trial}
 
 \item{type}{string. type of hypothesis test taken.
-- for two tailed test use "equal" (Default)  or "="
-- for one-tailed lower tail test use "less" or "<"
-- for one-tailed upper tail test use "more" or "greater" or "higher"
-  or ">"}
+
+       - for two tailed test use "equal" (Default)  or "="
+
+       - for one-tailed lower tail test use "less" or "<"
+
+       - for one-tailed upper tail test use "more" or "greater" or "higher"
+         or ">"}
 
 \item{conf}{confidence interval used}
 }
