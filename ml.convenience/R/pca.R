@@ -28,6 +28,10 @@
 #' @author Ronny Restrepo
 #' @export
 pca <- function(x, threshold=0.8, plot=FALSE){
+    # TODO: BUG: function breaks when it does not find any pairs that are 
+    #            correlated above the threshold. 
+    # TODO: Add extra columns, eg to show waht the correlation is, and r^2 
+    #       coefficient is. 
     
     # Take the correlations of all columns
     correlates <- abs(cor(x)) 
