@@ -1,60 +1,89 @@
 library("stat.convenience")
 
+# ==============================================================================
+#                                                              PLOT_DISTRIBUTION
+# ==============================================================================
 #' plot_distribution
 #' 
 #' Plots what a particular distribution looks like given parameters such as 
+#' 
 #' - mean and standard deviation (for normal distribution).
+#' 
 #' - size and p (for binomial distribution)
+#' 
 #' - df (for t distribution)
+#' 
 #' - df and df2 (for f distribution)
+#' 
 #' - mean (for poisson distribution)
 #' 
-#' @param dist "normal" "poisson" "binomial" "t" "f" "exp" determines the   
+#' @param dist (string) "normal" "poisson" "binomial" "t" "f" "exp" determines the   
 #'             distribution to use.
-#' @param  mean numeric. The mean of the distribution. If using poisson, this 
+#' @param  mean (numeric) The mean of the distribution. If using poisson, this 
 #'             is ths lambda value.
+#'             
 #'             DEFAULT = 0 if using normal distribution. 
+#'             
 #'             DEFAULT = 1 if using poisson distribution. 
-#' @param  sd  Standard deviation. 
+#' @param  sd  (numeric) Standard deviation. 
+#'             
 #'             DEFAULT = 1
-#' @param  n   int. Used when dealing with binomial distribution. The number 
+#' @param  n   (integer) Used when dealing with binomial distribution. The number 
 #'             of times we run the binomial event, eg flip a coin.
+#'             
 #'             DEFAULT: 1
-#' @param  p   numeric. probability of success when using binomial 
+#' @param  p   (numeric) probability of success when using binomial 
 #'             deistribution
+#'             
 #'             DEFAULT: 0.5
-#' @param  df  Degrees of Freedom when using t distribution. 
+#' @param  df  (integer) Degrees of Freedom when using t distribution. 
+#'             
 #'             Or the first degrees of freedom when using f distribution
+#'             
 #'             DEFAULT = 1   (if "t" distribution chosen)
+#'             
 #'             DEFAULT = 10  (if "f" distribution chosen)
-#' @param  df2 Second degrees of freedom when using f distribution
+#' @param  df2 (integer) Second degrees of freedom when using f distribution
+#'             
 #'             DEFAULT = 100
 #' @param rate Used for exponential Distribution
+#'             
 #'             DEFAULT = 1
-#' @param  res integer. Resolution of the plot (measured as the number of 
+#' @param  res (integer) Resolution of the plot (measured as the number of 
 #'             data points along the x axis)
+#'             
 #'             Not implemented for Poisson distribution yet.
+#'             
 #'             DEFAULT = 100 if using normal distribution
-#' @param return.df should it return a dataframe of the x and y values? 
-#'                  DEFAULT = FALSE
-#' @param primary   boolean. Whether to plot as primary plot using plot() or 
-#'                  append to an exisitng plot using points()
-#'                  DEFAULT = TRUE
-#' @param conf      float. confidence interval (eg 0.95). if NA, then no 
-#'                  confidence interval is used.  
-#'                  DEFAULT = NA
-#' @param conf.type "less" for confidence interval when doing a lower tail test 
-#'                  "more" for confidence interval when doing an upper tail test 
-#'                  "equal" for double sided tests.
-#'                  DEFAULT = "equal"
-#' @param show.mean Show a vertical line highlihgting mean of the distribution?
-#'                  DEFAULT = TRUE
-#' @param  p.lower  numeric. A quantile used to calculate the lower end of the 
+#' @param return.df (logical) should it return a dataframe of the x and y values? 
+#'                  
+#'              DEFAULT = FALSE
+#' @param primary (logical) Whether to plot as primary plot using plot() or 
+#'              append to an exisitng plot using points()
+#'              
+#'              DEFAULT = TRUE
+#' @param conf  (numeric) confidence interval (eg 0.95). if NA, then no 
+#'              confidence interval is used.  
+#'              
+#'              DEFAULT = NA
+#' @param conf.type (string) "less" for confidence interval when doing a lower tail test 
+#'                  
+#'              "more" for confidence interval when doing an upper tail test 
+#'                  
+#'              "equal" for double sided tests.
+#'              
+#'              DEFAULT = "equal"
+#' @param show.mean (logical) Show a vertical line highlihgting mean of the distribution?
+#'                  
+#'              DEFAULT = TRUE
+#' @param  p.lower  (numeric) A quantile used to calculate the lower end of the 
 #'                  x axis to plot. eg, if a value of 0.25 is used, then the x  
 #'                  axis will start at the 25th percentile of the distribution.
+#'                  
 #'                  DEFAULT = 0.0001 
-#' @param  p.upper  numeric. quantile used to calculate the upper end of the 
+#' @param  p.upper  (numeric) quantile used to calculate the upper end of the 
 #'                  x axis to plot.
+#'                  
 #'                  DEFAULT = 0.9999
 #' @param ...       other parameters to pass onto the plot
 #' 
