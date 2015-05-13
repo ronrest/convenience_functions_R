@@ -2,6 +2,7 @@
 
 export(cbinom)
 export(coinflipper)
+export(ct)
 export(filter.columns)
 export(lm2)
 export(na.summary)
