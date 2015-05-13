@@ -156,7 +156,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
         y = dt(x, df=df)
         
         # Should it plot a confidence interval?
-        if (!is.na(conf.type)){
+        if (!is.na(conf)){
             title = sprintf("t Distribution with\n df = %.2f and confidence interval of %.3f", df, conf)
             CI = ct(df=df, type=conf.type, conf=conf)
             shade_between(x, y, lower=CI[1], upper=CI[2], primary=primary,  
@@ -245,7 +245,7 @@ plot_distribution <- function(dist="normal", mean=NA, sd=NA, n=NA, p=NA, df=NA,
             warning("Secondary plotting is not yet implemented for binomial ",
                     "distribution")
         } else {
-            if (!is.na(conf.type)){
+            if (!is.na(conf)){
                 title = sprintf("Binomial Distribution with\n n=%d and p=%.3f and confidence interval of %.3f", n, p, conf)
                 CI = cbinom(size=n, prob=p, type=conf.type, conf=conf)
                 shade_between_bars(x, y, lower=CI[1], upper=CI[2], 
