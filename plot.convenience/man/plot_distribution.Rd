@@ -6,7 +6,7 @@
 \usage{
 plot_distribution(dist = "normal", mean = NA, sd = NA, n = NA, p = NA,
   df = NA, df2 = NA, rate = NA, res = 100, return.df = FALSE,
-  primary = TRUE, conf = 0.95, conf.type = "equal", p.lower = 1e-04,
+  primary = TRUE, conf = NA, conf.type = "equal", p.lower = 1e-04,
   p.upper = 0.9999, ...)
 }
 \arguments{
