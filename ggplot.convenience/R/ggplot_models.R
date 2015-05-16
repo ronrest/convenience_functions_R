@@ -58,6 +58,18 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
                              point.alpha=0.4, point.size=6, point.border=1, 
                              line.col="orange", line.alpha=0.7, line.width=1, 
                              ...){
+    # TODO: BUG: occasionally comes up with error 
+    #   Error in data.frame(x = c(4.18333804327995, 1.81955364346504, 5.80704394401982,  : 
+    #   arguments imply differing number of rows: 100, 48
+    # 
+    # This occurs with 
+    # library(UsingR)
+    # data(diamond)
+    # diamond.model = lm(diamond$price ~ diamond$carat)
+    # ggplot_residuals(diamond.model)
+    #
+    # But if i name it just model instead of diamond.model it is fine. 
+    
     require("ggplot2")
     
     g = ggplot(model$model, aes(x=model$model[,2], y=resid(model)), ...)
