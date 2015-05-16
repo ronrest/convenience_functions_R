@@ -85,3 +85,21 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
 
 
 
+# ==============================================================================
+#                                                                   GEOM_LM_LINE
+# ==============================================================================
+#' geom_lm_line
+#' 
+#' Convenience function for ggplot to play friendly with lm models 
+#' 
+#' @param model (lm object) the linear model object to use
+#' @param x ????
+#' @param ... other arguments to be passed on to geom_abline()
+#' 
+#' @author Shenqi
+#' @source https://gist.github.com/shenqi/29b42a6be83ec9e0517d
+geom_lm_line <- function(model, x=NULL, ...){
+    co <- model$coefficients
+    stopifnot(is.numeric(co[[1]]))
+    return(geom_abline(intercept=co[[1]], slope=ifelse(is.null(x), co[[2]], co[[x]]), ...))
+}
