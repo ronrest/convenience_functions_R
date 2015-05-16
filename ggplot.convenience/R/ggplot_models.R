@@ -85,6 +85,101 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
 
 
 
+
+
+
+# ==============================================================================
+#                                                                   GGPLOT_MODEL
+# ==============================================================================
+#' ggplot_model
+#' 
+#' Create a plot of some particular model object. You can chose to plot the 
+#' observed values and the residuals as well. 
+#' 
+#' Currently only supports linear models, but support will be expanded to any 
+#' arbitrary model in the future.  
+#' 
+#' @param  model (model object) an object created from a modelling function such 
+#'          as lm()
+#' @param points (logical) Should it show the observed data points?
+#'        
+#'      (DEFAULT = TRUE)
+#' @param residuals (logical) Should it show the residuals as vertical lines? 
+#' 
+#'      (DEFAULT = FALSE)
+#' @param model.color (string) The color of the model line/curve
+#' 
+#'      (DEFAULT = "red") 
+#' @param model.width (numeric) width of the model line/curve 
+#' 
+#'       (DEFAULT = 1) 
+#' @param model.alpha (numeric) alpha of the model line/curve
+#' 
+#'       (DEFAULT = 1) 
+#' @param point.col (string) The color for the points
+#' 
+#'      (DEFAULT = "blue")
+#' @param point.size (int) The size of the points
+#' 
+#'      (DEFAULT = 4)
+#' @param point.border (int) size of border of points 
+#' 
+#'      (DEFAULT = 1)
+#' @param resid.col (string) the color for the residual lines
+#' 
+#'      (DEFAULT = "red")
+#' @param resid.alpha (numeric) alpha for the residual lines 
+#'      
+#'      (DEFAULT = 0.7)
+#' @param resid.width (numeric) width of the residual lines
+#' 
+#'      (DEFAULT = 1)
+#' @param  ... aditional parameters for the ggplot
+#' 
+#' @examples 
+#' data(iris)
+#' model = lm(iris$Petal.Length ~ iris$Sepal.Length)
+#' ggmodel_plot(model, points=TRUE, residuals=TRUE, point.col="green")
+#' 
+#' ggmodel_plot(model, points=FALSE, residuals=TRUE, point.size=4, resid.width=5, resid.alpha=0.2, resid.col="red", point.border=2)
+#' 
+#' @author Ronny Restrepo
+#' @export
+ggplot_model <- function(model, points=TRUE, residuals=FALSE, 
+                         model.color="red", model.width=1, model.alpha=1, 
+                         point.col="blue", point.alpha=0.4, point.size=6, 
+                         point.border=1, 
+                         resid.col="orange", resid.alpha=0.7, resid.width=1, 
+                         ...){
+    require("ggplot2")
+    
+    g = ggplot(model$model, aes(x=model$model[,2], y=model$model[,1]), ...)
+    
+    # Draw the scatter points
+    if (points){
+        if (point.border < 0){point.border = 0}
+        g = g + geom_point(size=point.size+point.border, colour="black", 
+                           alpha=point.alpha)
+        g = g + geom_point(size=point.size, colour=point.col, 
+                           alpha=point.alpha)
+    }
+    
+    # Draw the residuals as vertical lines
+    if (residuals){
+        g = g + geom_segment(aes(x=model$model[,2], y=predict(model), 
+                                 xend=model$model[,2], 
+                                 yend=model$model[,1]), 
+                             color=resid.col, size=resid.width, alpha=resid.alpha)
+    }
+    
+    # Draw the model
+    g = g + geom_lm_line(model, color=model.color, size=model.width, alpha=model.alpha)
+    
+    return(g)
+}
+
+
+
 # ==============================================================================
 #                                                                   GEOM_LM_LINE
 # ==============================================================================
@@ -103,3 +198,4 @@ geom_lm_line <- function(model, x=NULL, ...){
     stopifnot(is.numeric(co[[1]]))
     return(geom_abline(intercept=co[[1]], slope=ifelse(is.null(x), co[[2]], co[[x]]), ...))
 }
+
