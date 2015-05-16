@@ -70,6 +70,8 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
     #
     # But if i name it just model instead of diamond.model it is fine. 
     
+    # TODO: Add option for plotting confidence interval for regression line.
+    # TODO: Add option for plotting confidence interval for prediction
     require("ggplot2")
     
     g = ggplot(model$model, aes(x=model$model[,2], y=resid(model)), ...)
@@ -163,6 +165,8 @@ ggplot_model <- function(model, points=TRUE, residuals=FALSE,
                          point.border=1, 
                          resid.col="orange", resid.alpha=0.7, resid.width=1, 
                          ...){
+    # TODO: Add option for plotting confidence interval for regression line.
+    # TODO: Add option for plotting confidence interval for prediction
     require("ggplot2")
     
     g = ggplot(model$model, aes(x=model$model[,2], y=model$model[,1]), ...)
