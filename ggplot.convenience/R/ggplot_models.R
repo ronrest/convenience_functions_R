@@ -1,9 +1,9 @@
 library(ggplot2)
 
 # ==============================================================================
-#                                                                GGRESIDUAL_PLOT
+#                                                               GGPLOT_RESIDUALS
 # ==============================================================================
-#' ggresidual_plot
+#' ggplot_residuals
 #' 
 #' Create a plot of observed x values vs residuals for some particular model 
 #' object. 

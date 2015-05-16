@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggplot_models.R
 \name{ggplot_residuals}
 \alias{ggplot_residuals}
-\title{ggresidual_plot}
+\title{ggplot_residuals}
 \usage{
 ggplot_residuals(model, points = TRUE, lines = FALSE, point.col = "blue",
   point.alpha = 0.4, point.size = 6, point.border = 1,
