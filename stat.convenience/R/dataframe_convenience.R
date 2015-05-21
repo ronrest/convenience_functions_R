@@ -84,8 +84,14 @@ library("fancyprint")
 #' @author Ronny Restrepo
 #' @export
 na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
+    # TODO: use colSums(is.na(df)) instead of doing for loops and summing 
+    #       individual columns.
+    
     # TODO: give option to return a vector of either colum indices, or column 
     #       names of the columns that have nas, or the ones with no nas. 
+    
+    # TODO: print out the number of columns that contained NAs in them. And 
+    #       what proportion this is. 
     
     require("fancyprint")
     
