@@ -4,34 +4,57 @@
 \alias{filter.columns}
 \title{filter.columns}
 \usage{
-filter.columns(x, pattern, exclude = FALSE, ...)
+filter.columns(x, pattern = NA, exclude = FALSE, method = "regex", ...)
 }
 \arguments{
 \item{x}{(dataframe) The dataframe you want to filter.}
 
-\item{pattern}{(string) A regular expression.}
+\item{pattern}{- (string) A regular expression (if method="regex")
 
-\item{exclude}{(logical) Should the columns matching the pattern be filtered
-       out? If TRUE, then it returns all columns except the ones matching the
-       pattern.. If FALSE, then it returns only the columns that match.
+         - (vector of strings) the names of columns to filter
+           (if method="list")}
+
+\item{exclude}{(logical) Should the columns matching the criteria be filtered
+       out?
+
+       - If TRUE, then it returns all columns except the ones matching the
+       criteria
+
+       - If FALSE, then it returns only the columns that match.
 
         (DEFAULT = FALSE)}
 
+\item{method}{(string) the type of criteria to be used.
+
+         - "regex" (DEFAULT) use a regular expression pattern
+
+         - "list" when you want to provide a vector of column names to filter}
+
 \item{...}{aditional parameters to be passed on to grep()}
+}
+\value{
+a copy of the dataframe with columns filtered out.
 }
 \description{
 Returns a copy of a dataframe which filters for, or filters out, only the
-columns that fit some regular expression pattern. You can chose if the
-columns that match the pattern should be the ones returned, or if they are
-the ones that should be excluded.
+columns whose names fit some criteria. That criteria could be a regular
+expression pattern, or it could be a vector of explicit column names. You can
+chose if the columns that match the criteria should be the ones returned, or
+if they are the ones that should be excluded.
 }
 \examples{
-# Returns only the columns that start with "Petal"
-data(iris)
-filter.columns(iris, "^Petal")
+# return only the columns with "p" in their names
+filter.columns(mtcars, "p")
 
-# Filters out the columns that start with "Petal"
-filter.columns(iris, "^Petal", exclude=TRUE)
+# return only the columns WITHOUT "p" in their names
+filter.columns(mtcars, "p", exclude=TRUE)
+
+# return only the columns whose names are in the filter vector below
+filter = c("mpg", "cyl", "gear")
+filter.columns(mtcars, filter, method="list")
+
+# return only the columns whose names are NOT in the filter vector below
+filter.columns(mtcars, filter, method="list", exclude=TRUE)
 }
 \author{
 Ronny Restrepo
