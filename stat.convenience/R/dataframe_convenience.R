@@ -4,7 +4,7 @@
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
 
-require("fancyprint")
+library("fancyprint")
 
 # ==============================================================================
 #                                                                     NA.SUMMARY
@@ -45,6 +45,8 @@ na.summary <- function(df, lineup=TRUE){
     # TODO: have option to cap the number of indices to show, eg just the first 
     #       5 indices, and show if it has printed all, or if there is more using
     #       ... dots. 
+    
+    require("fancyprint")
     
     #n.rows = nrow(df)
     col.names = names(df)
