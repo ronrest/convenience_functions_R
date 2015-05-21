@@ -4,30 +4,50 @@
 \alias{no.nas}
 \title{no.nas}
 \usage{
-no.nas(df)
+no.nas(df, byCols = FALSE)
 }
 \arguments{
 \item{df}{(dataframe) The dataframe you want to clean up.}
+
+\item{byCols}{(logical) Remove cols containing the NAs?
+
+     - if TRUE, then it removes the columns containing NAs.
+
+     - If FALSE, then it removes the rows containing the NAs (DEFAULT)}
 }
 \description{
-Returns a copy of a dataframe which has all rows containing NAs removed.
+Returns a copy of a dataframe which has all rows (or all columns) containing
+NAs removed. You specify if its the columns or rows that you want to remove.
+}
+\details{
+By default, it removes rows containing NAs. But you can remove the columns
+containing NAs by setting byCols=TRUE
 }
 \examples{
 # Create a dataframe
-a = c(11,NA,13,14,15,16,17,18,19)
-b = c(21,22,NA,24,25,26,27,28,29)
-c = c(31,32,33,34,35,36,NA,NA,NA)
-d = c(NA,42,43,44,45,46,47,48,49)
-df = data.frame(a,b,c,d)
+a = c(11,12,13,14,15,NA)
+b = c(21,22,23,NA,25,26)
+d = c(NA,32,33,34,35,36)
+e = c(41,42,43,44,45,46)
+f = c(51,52,53,54,55,56)
+df = data.frame(a,b,d,e,f)
 
-# return only the rows with no NAs in it
+# Return just the rows with no NAs
 no.nas(df)
+#    a  b  d  e  f
+# 2 12 22 32 42 52
+# 3 13 23 33 43 53
+# 5 15 25 35 45 55
 
-# Result is
-# a  b  c  d
-# 4 14 24 34 44
-# 5 15 25 35 45
-# 6 16 26 36 46
+# Return just the columns with no NAs
+no.nas(df, byCols=TRUE)
+#    e  f
+# 1 41 51
+# 2 42 52
+# 3 43 53
+# 4 44 54
+# 5 45 55
+# 6 46 56
 }
 \author{
 Ronny Restrepo
