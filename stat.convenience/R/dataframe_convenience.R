@@ -70,6 +70,15 @@ library("fancyprint")
 #' #[1] "delta  : 3: (1, 5, 10)"
 #' #[1] "=========================================="
 #' 
+#' na.summary(df, no.nas=TRUE)
+#' #[1] "=========================================="
+#' #[1] "             SUMMARY OF NAS               "
+#' #[1] "=========================================="
+#' #[1] "Columns not containing any NAs"
+#' #[1] "                                          "
+#' #[1] "a: 0"
+#' #[1] "=========================================="
+#' 
 #' @author Ronny Restrepo
 #' @export
 na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
@@ -95,14 +104,24 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
     print("==========================================")
     print("             SUMMARY OF NAS               ")
     print("==========================================")
-    print("Column name: Number of NAs: Indices of NAs")
+    if (no.nas){
+        print("Columns not containing any NAs")
+    } else {
+        print("Column name: Number of NAs: Indices of NAs")
+    }
     print("                                          ")
     for (col in col.names){
         n.na = sum(na.all[,col])
         
-        # If there are no NAs, and only.nas is TRUE, then dont print summary 
-        # for that column, otherwise, print it out. 
-        if ((n.na > 0) | (!only.nas)){
+        # If no.nas is set to TRUE, then only print out the columns with no NAs
+        if (no.nas){
+            if (n.na == 0){
+                printkv(col, 0)
+            }
+        }
+        # If only.nas is TRUE, and there are no NAs, then skip, otherwise print 
+        # out the summary for that column 
+        else if ((n.na > 0) | (!only.nas)){
             n.indices = head(which(is.na(df[,col])), limit)
             if (n.na > limit){
                 n.indices = c(n.indices, "...")
@@ -112,7 +131,6 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
         }
     }
     print("==========================================")
-    
 }
 
 

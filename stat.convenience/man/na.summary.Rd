@@ -4,7 +4,8 @@
 \alias{na.summary}
 \title{na.summary}
 \usage{
-na.summary(df, lineup = TRUE, limit = 8)
+na.summary(df, lineup = TRUE, limit = 8, only.nas = FALSE,
+  no.nas = FALSE)
 }
 \arguments{
 \item{df}{(dataframe) The dataframe you want to check for NAs}
@@ -19,27 +20,62 @@ FALSE = disables this automatic lining up feature.
 \item{limit}{(integer) max number of NA indices to print out
 
         (DEFAULT = 8)}
+
+\item{only.nas}{(logical) Only return summaries for columns containing NAs?
+
+         - if FALSE, then it gives summary of all columns.
+
+         - if TRUE, then it only prints out sumary for those columns
+           containing at least one NA.
+
+         (DEFAULT=FALSE)}
+
+\item{no.nas}{(logical) prints out only the columns that dont contain any NAs
+
+         - If TRUE, then it only shows the columns that dont contain any NAs.
+           This overrides the `only.nas` argument.
+
+         (DEFAULT = FALSE)}
 }
 \description{
 Prints a summary of NAs that exist in the dataframe.
 }
 \examples{
-a = c(1,NA,3,4,5,6,7,8,9,10)
+a = c(1,2,3,4,5,6,7,8,9,10)
 bravo = c(1,2,NA,NA,5,6,7,8,9,10)
 charlie = c(NA,NA,NA,NA,NA,NA,NA,NA,NA,NA)
 delta = c(NA,2,3,4,NA,6,7,8,9,NA)
 df = data.frame(a,bravo,charlie,delta)
 na.summary(df)
-
 #[1] "=========================================="
 #[1] "             SUMMARY OF NAS               "
 #[1] "=========================================="
 #[1] "Column name: Number of NAs: Indices of NAs"
 #[1] "                                          "
-#[1] "a      : 1: 2"
+#[1] "a      : 0: "
 #[1] "bravo  : 2: (3, 4)"
 #[1] "charlie: 10: (1, 2, 3, 4, 5, 6, 7, 8, ...)"
 #[1] "delta  : 3: (1, 5, 10)"
+#[1] "=========================================="
+
+na.summary(df, only.nas=TRUE)
+#[1] "=========================================="
+#[1] "             SUMMARY OF NAS               "
+#[1] "=========================================="
+#[1] "Column name: Number of NAs: Indices of NAs"
+#[1] "                                          "
+#[1] "bravo  : 2: (3, 4)"
+#[1] "charlie: 10: (1, 2, 3, 4, 5, 6, 7, 8, ...)"
+#[1] "delta  : 3: (1, 5, 10)"
+#[1] "=========================================="
+
+na.summary(df, no.nas=TRUE)
+#[1] "=========================================="
+#[1] "             SUMMARY OF NAS               "
+#[1] "=========================================="
+#[1] "Columns not containing any NAs"
+#[1] "                                          "
+#[1] "a: 0"
 #[1] "=========================================="
 }
 \author{
