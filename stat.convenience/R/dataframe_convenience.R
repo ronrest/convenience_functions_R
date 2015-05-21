@@ -272,7 +272,6 @@ filter.columns <- function(x, pattern=NA, exclude=FALSE, method="regex", ...){
             return(x[, cols])
         }
     } else if (method == "list"){
-        print(pattern)
         if (any(is.na(pattern))){
             warning("You must have ONLY string values for pattern, when using",
                     "method='list'. Returning NA")
