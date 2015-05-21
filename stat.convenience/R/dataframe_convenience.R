@@ -4,6 +4,9 @@
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
 
+# TODO: add a function na.thresh() which is similar to no.nas() but which only 
+#       removes rows/cols when there are more than some threshold of NAs. 
+
 library("fancyprint")
 
 # ==============================================================================
