@@ -41,6 +41,8 @@ library("fancyprint")
 #'            This overrides the `only.nas` argument. 
 #'          
 #'          (DEFAULT = FALSE)
+#' @return silently returns a vector of strings representing the columns that 
+#'         contain NAs (or the columns that dont contain any NAs if no.nas=TRUE) 
 #' @examples
 #' a = c(1,2,3,4,5,6,7,8,9,10)
 #' bravo = c(1,2,NA,NA,5,6,7,8,9,10)
@@ -97,6 +99,9 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
         lineup.space = 0
     }
     
+    # keep track of all the columns containing NAs (or no NAs if no.nas=TRUE)
+    cols.with.nas = c() 
+    
     # Logicals Matrix of all the elements that are NAs
     na.all = is.na(df)
     
@@ -112,6 +117,10 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
     print("                                          ")
     for (col in col.names){
         n.na = sum(na.all[,col])
+        
+        # Append to cols.with.nas if it contains NAs (or no NAs if no.nas=TRUE)
+        if (!no.nas & n.na > 0){cols.with.nas = c(cols.with.nas, col)}
+        else if (no.nas & n.na == 0){cols.with.nas = c(cols.with.nas, col)}
         
         # If no.nas is set to TRUE, then only print out the columns with no NAs
         if (no.nas){
@@ -131,7 +140,9 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
         }
     }
     print("==========================================")
+    invisible(cols.with.nas)
 }
+
 
 
 # ==============================================================================

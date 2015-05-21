@@ -37,6 +37,10 @@ FALSE = disables this automatic lining up feature.
 
          (DEFAULT = FALSE)}
 }
+\value{
+silently returns a vector of strings representing the columns that
+        contain NAs (or the columns that dont contain any NAs if no.nas=TRUE)
+}
 \description{
 Prints a summary of NAs that exist in the dataframe.
 }
