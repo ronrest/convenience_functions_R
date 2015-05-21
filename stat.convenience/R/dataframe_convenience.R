@@ -23,28 +23,31 @@ library("fancyprint")
 #'        the right and may make it look ugly. 
 #'        FALSE = disables this automatic lining up feature.
 #'        (DEFAULT = TRUE)
+#' @param limit (integer) max number of NA indices to print out
+#' 
+#'         (DEFAULT = 8) 
 #' @examples
 #' a = c(1,NA,3,4,5,6,7,8,9,10)
 #' bravo = c(1,2,NA,NA,5,6,7,8,9,10)
-#' charlie = c(1,2,3,4,5,6,NA,NA,NA,10)
+#' charlie = c(NA,NA,NA,NA,NA,NA,NA,NA,NA,NA)
 #' delta = c(NA,2,3,4,NA,6,7,8,9,NA)
 #' df = data.frame(a,bravo,charlie,delta)
 #' na.summary(df)
 #' 
-#' [1] "=========================================="
-#' [1] "             SUMMARY OF NAS               "
-#' [1] "=========================================="
-#' [1] "Column name: Number of NAs: Indices of NAs"
-#' [1] "                                          "
-#' [1] "a      : 1: 2"
-#' [1] "bravo  : 2: (3, 4)"
-#' [1] "charlie: 3: (7, 8, 9)"
-#' [1] "delta  : 3: (1, 5, 10)"
-#' [1] "=========================================="
+#' #[1] "=========================================="
+#' #[1] "             SUMMARY OF NAS               "
+#' #[1] "=========================================="
+#' #[1] "Column name: Number of NAs: Indices of NAs"
+#' #[1] "                                          "
+#' #[1] "a      : 1: 2"
+#' #[1] "bravo  : 2: (3, 4)"
+#' #[1] "charlie: 10: (1, 2, 3, 4, 5, 6, 7, 8, ...)"
+#' #[1] "delta  : 3: (1, 5, 10)"
+#' #[1] "=========================================="
 #' 
 #' @author Ronny Restrepo
 #' @export
-na.summary <- function(df, lineup=TRUE){
+na.summary <- function(df, lineup=TRUE, limit=8){
     # TODO: have option to cap the number of indices to show, eg just the first 
     #       5 indices, and show if it has printed all, or if there is more using
     #       ... dots. 
@@ -72,13 +75,17 @@ na.summary <- function(df, lineup=TRUE){
     print("                                          ")
     for (col in col.names){
         n.na = sum(na.all[,col])
-        n.indices = which(is.na(df[,col]))
+        n.indices = head(which(is.na(df[,col])), limit)
+        if (n.na > limit){
+            n.indices = c(n.indices, "...")
+        } 
         val = strkv(n.na, n.indices)
         printkv(col, val, fill=lineup.space)
     }
     print("==========================================")
     
 }
+
 
 # ==============================================================================
 #                                                                         NO.NAS

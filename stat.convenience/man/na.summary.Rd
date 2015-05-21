@@ -4,7 +4,7 @@
 \alias{na.summary}
 \title{na.summary}
 \usage{
-na.summary(df, lineup = TRUE)
+na.summary(df, lineup = TRUE, limit = 8)
 }
 \arguments{
 \item{df}{(dataframe) The dataframe you want to check for NAs}
@@ -15,6 +15,10 @@ than all the others it may cause the values to be pushed too far to
 the right and may make it look ugly.
 FALSE = disables this automatic lining up feature.
 (DEFAULT = TRUE)}
+
+\item{limit}{(integer) max number of NA indices to print out
+
+        (DEFAULT = 8)}
 }
 \description{
 Prints a summary of NAs that exist in the dataframe.
@@ -22,21 +26,21 @@ Prints a summary of NAs that exist in the dataframe.
 \examples{
 a = c(1,NA,3,4,5,6,7,8,9,10)
 bravo = c(1,2,NA,NA,5,6,7,8,9,10)
-charlie = c(1,2,3,4,5,6,NA,NA,NA,10)
+charlie = c(NA,NA,NA,NA,NA,NA,NA,NA,NA,NA)
 delta = c(NA,2,3,4,NA,6,7,8,9,NA)
 df = data.frame(a,bravo,charlie,delta)
 na.summary(df)
 
-[1] "=========================================="
-[1] "             SUMMARY OF NAS               "
-[1] "=========================================="
-[1] "Column name: Number of NAs: Indices of NAs"
-[1] "                                          "
-[1] "a      : 1: 2"
-[1] "bravo  : 2: (3, 4)"
-[1] "charlie: 3: (7, 8, 9)"
-[1] "delta  : 3: (1, 5, 10)"
-[1] "=========================================="
+#[1] "=========================================="
+#[1] "             SUMMARY OF NAS               "
+#[1] "=========================================="
+#[1] "Column name: Number of NAs: Indices of NAs"
+#[1] "                                          "
+#[1] "a      : 1: 2"
+#[1] "bravo  : 2: (3, 4)"
+#[1] "charlie: 10: (1, 2, 3, 4, 5, 6, 7, 8, ...)"
+#[1] "delta  : 3: (1, 5, 10)"
+#[1] "=========================================="
 }
 \author{
 Ronny Restrepo
