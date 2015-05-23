@@ -202,6 +202,8 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
 #' @author Ronny Restrepo
 #' @export
 no.nas <- function(df, byCols=FALSE){
+    #TODO: option to use a threshold value, where it only filters out row/column
+    #      if there is more than a certain proportion of them for that row/column
     if (!byCols){
         return(df[complete.cases(df),])
     }
