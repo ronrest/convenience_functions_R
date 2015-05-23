@@ -93,7 +93,9 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
     # TODO: print out the number of columns that contained NAs in them. And 
     #       what proportion this is. 
     
-    # TODO: Option to return PROPORTION of NAs per column, istead of sum.
+    # TODO: Option to return PROPORTION of NAs per column, istead of sum. 
+    #       Consider using colMeans(is.na(df)) for this. colMeans combined with 
+    #       is.na gives a proportion (not mean)
     
     # TODO: Option to only show info for columns with more than a certain 
     #       proportion of NAs
