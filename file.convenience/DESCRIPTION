@@ -1,0 +1,8 @@
+Package: file.convenience
+Title: Convenience Functions for File Operations
+Version: 0.0.0.1000
+Authors@R: person("Ronny", "Restrepo", , "ronny.coding@gmail.com", role = c("aut", "cre"))
+Description: Simplifies common file operations, such as caching downloaded files.
+Depends: R (>= 3.2.0), curl
+License: GPLv2
+LazyData: true
