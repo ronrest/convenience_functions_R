@@ -268,6 +268,8 @@ no.nas <- function(df, byCols=FALSE){
 #' @author Ronny Restrepo
 #' @export
 filter.columns <- function(x, pattern=NA, exclude=FALSE, method="regex", ...){
+    # TODO: add another method "na", with pattern=0.9 where if a column contains
+    #       more than 90% NAs in it, then it gets filtered. 
     if (method=="regex"){
         # Columns matching the pattern
         cols = grep(pattern, names(x), ...) 
