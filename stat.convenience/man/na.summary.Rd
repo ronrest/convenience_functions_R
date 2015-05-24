@@ -4,8 +4,8 @@
 \alias{na.summary}
 \title{na.summary}
 \usage{
-na.summary(df, lineup = TRUE, limit = 8, only.nas = FALSE,
-  no.nas = FALSE)
+na.summary(df, lineup = TRUE, limit = 8, thresh = NA, only.nas = FALSE,
+  no.nas = FALSE, printit = TRUE)
 }
 \arguments{
 \item{df}{(dataframe) The dataframe you want to check for NAs}
@@ -21,6 +21,11 @@ FALSE = disables this automatic lining up feature.
 
         (DEFAULT = 8)}
 
+\item{thresh}{(numerical) threshold value between 0 and 1, representing
+proportion of NAs in the column. So iff you use thresh=0.3 it
+returns NA information for all the columns that are composed of more
+than 30% NAs}
+
 \item{only.nas}{(logical) Only return summaries for columns containing NAs?
 
          - if FALSE, then it gives summary of all columns.
@@ -33,13 +38,22 @@ FALSE = disables this automatic lining up feature.
 \item{no.nas}{(logical) prints out only the columns that dont contain any NAs
 
          - If TRUE, then it only shows the columns that dont contain any NAs.
-           This overrides the `only.nas` argument.
+           This overrides the `only.nas` and `thresh` arguments.
 
          (DEFAULT = FALSE)}
+
+\item{printit}{(logical) Should it print a pretty version of the summary?
+
+         (DEFAULT = TRUE)}
 }
 \value{
-silently returns a vector of strings representing the columns that
-        contain NAs (or the columns that dont contain any NAs if no.nas=TRUE)
+silently returns a dataframe with the following columns:
+
+         $colName the names of the columns of interest
+
+         $total the total number of NAs in that column
+
+         $proportion the proportion of NAs in that column
 }
 \description{
 Prints a summary of NAs that exist in the dataframe.

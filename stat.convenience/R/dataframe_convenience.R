@@ -26,6 +26,10 @@ library("fancyprint")
 #' @param limit (integer) max number of NA indices to print out
 #' 
 #'         (DEFAULT = 8) 
+#' @param thresh (numerical) threshold value between 0 and 1, representing 
+#'          proportion of NAs in the column. So iff you use thresh=0.3 it 
+#'          returns NA information for all the columns that are composed of more 
+#'          than 30% NAs 
 #' @param only.nas (logical) Only return summaries for columns containing NAs?
 #' 
 #'          - if FALSE, then it gives summary of all columns. 
@@ -38,11 +42,19 @@ library("fancyprint")
 #' @param no.nas (logical) prints out only the columns that dont contain any NAs
 #'  
 #'          - If TRUE, then it only shows the columns that dont contain any NAs. 
-#'            This overrides the `only.nas` argument. 
+#'            This overrides the `only.nas` and `thresh` arguments. 
 #'          
 #'          (DEFAULT = FALSE)
-#' @return silently returns a vector of strings representing the columns that 
-#'         contain NAs (or the columns that dont contain any NAs if no.nas=TRUE) 
+#' @param printit (logical) Should it print a pretty version of the summary? 
+#' 
+#'          (DEFAULT = TRUE)
+#' @return silently returns a dataframe with the following columns:
+#' 
+#'          $colName the names of the columns of interest
+#'          
+#'          $total the total number of NAs in that column
+#'          
+#'          $proportion the proportion of NAs in that column 
 #' @examples
 #' a = c(1,2,3,4,5,6,7,8,9,10)
 #' bravo = c(1,2,NA,NA,5,6,7,8,9,10)
@@ -83,9 +95,8 @@ library("fancyprint")
 #' 
 #' @author Ronny Restrepo
 #' @export
-na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
-    # TODO: use colSums(is.na(df)) instead of doing for loops and summing 
-    #       individual columns.
+na.summary <- function(df, lineup=TRUE, limit=8, thresh=NA, only.nas=FALSE, 
+                          no.nas=FALSE, printit=TRUE){
     
     # TODO: give option to return a vector of either colum indices, or column 
     #       names of the columns that have nas, or the ones with no nas. 
@@ -93,68 +104,78 @@ na.summary <- function(df, lineup=TRUE, limit=8, only.nas=FALSE, no.nas=FALSE){
     # TODO: print out the number of columns that contained NAs in them. And 
     #       what proportion this is. 
     
-    # TODO: Option to return PROPORTION of NAs per column, istead of sum. 
-    #       Consider using colMeans(is.na(df)) for this. colMeans combined with 
-    #       is.na gives a proportion (not mean)
+    # TODO: allign total nas to the right, so digits, tens, hundreds, etc line up
     
-    # TODO: Option to only show info for columns with more than a certain 
-    #       proportion of NAs
+    # TODO: reimplement the feature to show the indices of NAs per column
     
     require("fancyprint")
+        
+    all.nas = is.na(df)                 # All elements that are NAs in df
+    totals = colSums(all.nas)           # Total number of NAs for each column
+    proportions = colMeans(all.nas)     # Proportion of NAs for each column
     
-    #n.rows = nrow(df)
-    col.names = names(df)
-    
-    if (lineup){
-        # Find the length of longest column name. Used to line things up. 
-        lineup.space = max(nchar(col.names))    
+    # Determine if to keep only the ones with no NAs, only with NAs, or all
+    if (no.nas) {
+        filter = names(totals[totals == 0])
+    }else if (!is.na(thresh)){
+        filter = names(proportions[proportions > thresh])    
+    }else if (only.nas){
+        filter =  names(totals[totals > 0])
     } else {
-        lineup.space = 0
+        filter = names(totals)
     }
     
-    # keep track of all the columns containing NAs (or no NAs if no.nas=TRUE)
-    cols.with.nas = c() 
-    
-    # Logicals Matrix of all the elements that are NAs
-    na.all = is.na(df)
+    # Create dataframe of the relevant columns
+    filtered.nadf = data.frame(colName=filter, total=totals[filter], 
+                               proportion=proportions[filter], row.names=NULL, 
+                               stringsAsFactors=FALSE)
+    #nadf
     
     # print out the summary
-    print("==========================================")
-    print("             SUMMARY OF NAS               ")
-    print("==========================================")
-    if (no.nas){
-        print("Columns not containing any NAs")
-    } else {
-        print("Column name: Number of NAs: Indices of NAs")
-    }
-    print("                                          ")
-    for (col in col.names){
-        n.na = sum(na.all[,col])
-        
-        # Append to cols.with.nas if it contains NAs (or no NAs if no.nas=TRUE)
-        if (!no.nas & n.na > 0){cols.with.nas = c(cols.with.nas, col)}
-        else if (no.nas & n.na == 0){cols.with.nas = c(cols.with.nas, col)}
-        
-        # If no.nas is set to TRUE, then only print out the columns with no NAs
+    if (printit){
+        col.names = names(filtered.nadf)
+        # ----------------------------------------------------------- Headings
+        print("==========================================")
+        print("             SUMMARY OF NAS               ")
+        print("==========================================")
         if (no.nas){
-            if (n.na == 0){
-                printkv(col, 0)
-            }
+            print("Columns not containing any NAs")
+        } else {
+            print("Col name: Num NAs (percent): Indices of NAs")
         }
-        # If only.nas is TRUE, and there are no NAs, then skip, otherwise print 
-        # out the summary for that column 
-        else if ((n.na > 0) | (!only.nas)){
-            n.indices = head(which(is.na(df[,col])), limit)
-            if (n.na > limit){
-                n.indices = c(n.indices, "...")
-            } 
-            val = strkv(n.na, n.indices)
-            printkv(col, val, fill=lineup.space)    
+        print("                                          ")
+        
+        # --------------------------------------------------- Line up settings
+        if (lineup){
+            # Find the length of longest column name. Used to line things up. 
+            lineup.space = max(nchar(filtered.nadf$colName))    
+        } else {
+            lineup.space = 0
         }
+        
+        # -------------------------------------------- Print each columns info
+        library(fancyprint)
+        for (i in 1:nrow(filtered.nadf)){
+            row = filtered.nadf[i,]
+            percent = paste("(",round(row$prop*100, digits=2), "%", ")",sep="")
+            val = strkv(row$total, percent, fill=4, sep="")
+                        
+            # Handle how many indices of the NAs to show per column
+            #if (!only.nas){
+            #    n.indices = head(which(is.na(df[,col])), limit)
+            #    if (row$total > limit){
+            #        n.indices = c(n.indices, "...")
+            #    } 
+            #    val = strkv(n.na, n.indices)
+            #    
+            #}
+            printkv(row$colName, val, fill=lineup.space)
+        }
+        print("==========================================")
     }
-    print("==========================================")
-    invisible(cols.with.nas)
+    invisible(filtered.nadf)
 }
+
 
 
 
