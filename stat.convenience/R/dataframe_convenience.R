@@ -20,6 +20,17 @@
 #       be able to specify what columns you want to test for some particular 
 #       assumption (either by column name, or by index number).
 #       
+#       The assumption object should also work along the lines of: 
+#               zero_to_one = assumtion(type=numeric, min=0, max=1)
+#               positiveFloats = assumption(type=numeric, min=0, max=inf)
+#               negativeFloats = assumption(type=numeric, min=-inf, max=0)
+#               integer_asp = assumption(type=integer)
+#               factors_occup_asp = assumption(type=factor, levels=c("teacher", 
+#                                              "doctor", "firefighter"))
+#               
+#       Also consider testing if the variables are normally distributed within 
+#       some acceptable threshold (eg by using skew/kurtosis/qplots to test).
+#       - Or also to test that there are no crazy outliers. 
 #
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
