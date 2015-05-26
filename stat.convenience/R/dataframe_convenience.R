@@ -1,6 +1,13 @@
 # A subset of functions belonging to the stat.convenience package that deal with 
 # common or useful dataframe operations. 
 
+# TODO: Add a function assumption.violators() which is somewhat similar to 
+#       na.summary() but looks for data that violates certain assumptions. 
+#       eg, if the values in columns are between 0-1, or that they are all 
+#       positive numbers, or that they are all integers, or they are all 
+#       strings that have a certain regex pattern, or they are all strings 
+#       that fall into only a preselected set of values.... etc.  
+#
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
 
