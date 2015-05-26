@@ -105,6 +105,12 @@ library("fancyprint")
 na.summary <- function(df, lineup=TRUE, limit=8, thresh=NA, only.nas=FALSE, 
                           no.nas=FALSE, printit=TRUE){
     
+    # TODO: Detect other common forms of missing values. eg:
+    #       - "#DIV/0!"
+    #       - "-"
+    #       - "none", "NONE", "None"
+    #       - "missing", "MISSING"
+    
     # TODO: give option to return a vector of either colum indices, or column 
     #       names of the columns that have nas, or the ones with no nas. 
     
