@@ -7,6 +7,19 @@
 #       positive numbers, or that they are all integers, or they are all 
 #       strings that have a certain regex pattern, or they are all strings 
 #       that fall into only a preselected set of values.... etc.  
+#       
+#       Perhaps a new kind of object should be used for this kind of task. 
+#       - eg, you create an "assumption" object. And then feed that assumption
+#         object to the assumption.violators() function, and it tells you
+#         which columns violate that assumption. 
+#         - eg,  
+#               zero_to_one = assumtion(type=numeric, min=0, max=1)
+#               assumption.violators(myDF, asp=zero_to_one) 
+#           
+#       Since different collumns have different assumptions, you should 
+#       be able to specify what columns you want to test for some particular 
+#       assumption (either by column name, or by index number).
+#       
 #
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
