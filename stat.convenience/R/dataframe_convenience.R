@@ -32,6 +32,29 @@
 #       some acceptable threshold (eg by using skew/kurtosis/qplots to test).
 #       - Or also to test that there are no crazy outliers. 
 #
+# TODO: create summary2() function, which prints out a summary that contains 
+#       - similar kind of output as summary() but, printed out in similar 
+#         way to my na.summary() function. 
+#       - contains info about missing values. eg NA=34(23%)
+#       - like str() it should also show data type
+#       - for numeric values it should show min, max, median, mean, and perhaps 
+#         skew, kurtosis.
+#       - should also highlight if the values are within the range of 0-1, 
+#         or if they are all positive, or all negative. 
+#         - but you should be able to specify which of these values to include/
+#           exclude to keep things pretty and uncluttered. 
+#       - For integers, do same output as numeric. 
+#       - For factors, it should return the number of factors, and a printout 
+#         of the first few factors, and you should be able to specify how many 
+#         to print out. 
+#       - For strings, do similar to factors, plus, min length of strings, and 
+#         max length of characters. 
+#       - like na.summary() it should return a dataframe
+#       - The printout should be grouped by class types, so all numerics
+#         grouped togeerher, all strings grouped together, factors, etc...
+#         This allows the columns of the output to remain compact. 
+#
+#
 # TODO: Add a function na.mean() which returns a copy of the dataframe but with 
 #       NAs replaced with the mean of that column. 
 
