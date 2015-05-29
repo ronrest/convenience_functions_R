@@ -5,45 +5,47 @@
 #' @title plot.cols
 #' @description Plots a grid of subplots, where each cell plotted corresponds to 
 #'              data from each column of a dataframe. 
-#' @details You can provide just a dataframe as an argument, and it will alow you to get 
-#'          an idea of how each column of data is distributed. 
+#' @details You can provide just a dataframe as an argument, and it will alow 
+#'          you to get an idea of how each column of data is distributed. 
 #' 
 #'          Alternatively, you can also provide a y value, and it will plot y as
 #'          a function of each of the columns in turn. 
 #' 
-#' @note Depending on whether you provide a value for y, there are different 
-#'       values for the "type" argument whcih may or may not be legal. 
+#' @note Depending on whether you provide a value for \code{y}, there are 
+#'       different values for the \code{type} argument whcih may or may not be 
+#'       legal. 
 #' 
 #' @param x (dataframe of numerics) dataframe that will act as the x values you 
 #'        want to plot
 #' @param y (vector of numerics) OPTIONAL. vector of the outcome values.
 #' 
-#'          - If y=NA (DEFAULT) then only x values are plotted 
+#'          - If \code{y=NA} (DEFAULT) then only \code{x} values are plotted 
 #'          
-#'          - If y is a vector of values, then it plots y as a function of the 
-#'            values of each column in x. 
+#'          - If \code{y} is a vector of values, then it plots y as a function of the 
+#'            values of each column in \code{x}. 
 #'            
 #' @param type (string) the type of plot to use for each cell.
 #' 
-#'      VALID VALUES WHEN y=NA : 
+#'      VALID VALUES WHEN \code{y=NA} : 
 #'      
-#'      - "scatter" scatter plot of x values as function of row index
+#'      - \code{"scatter"} scatter plot of x values as function of row index
 #'      
-#'      -"hist" histogram of the values
+#'      -\code{"hist"} histogram of the values
 #'      
-#'      -"density"  density plot
+#'      -\code{"density"}  density plot
 #'      
-#'      -"boxplot"  Box whisker plot
+#'      -\code{"boxplot"}  Box whisker plot
 #'      
-#'      VALID VALUES WHEN y IS GIVEN
 #'      
-#'      - "scatter" scatter plot
+#'      VALID VALUES WHEN \code{y} IS GIVEN
 #'      
-#'      - "lines", "|", "line", "l"  line plot
+#'      - \code{"scatter"} scatter plot
+#'      
+#'      - \code{"lines"}, \code{"|"}, \code{"line"}, \code{"l"}  line plot
 #'      
 #' @param labelCex (numeric) Controls size of the cell labels
 #' @param col the color(s) of the points/lines of the plot. You can use whatever 
-#'        value you would pass on to plot()
+#'        value you would pass on to \code{plot()}
 #'        
 #'        You can pass an individual value, or a vector of values, eg you can 
 #'        specify that the color of the points be determined by the value of 
@@ -51,35 +53,35 @@
 #'        
 #' @param grad (logical)  Should gradient colours be used?
 #'        
-#'        TRUE - If you specified a vector of numeric values for col, 
+#'        \code{TRUE} - If you specified a vector of numeric values for col, 
 #'               then you can chose to have the color be a gradient instead of 
 #'               discrete colors. 
-#'        FALSE - (DEFAULT) values in 'col' will be interpreted as discrete 
-#'               color  changes.  
+#'        \code{FALSE} - (DEFAULT) values in 'col' will be interpreted as 
+#'               discrete color changes.  
 #' @param grad.theme (string) Controls the gradient color
 #' 
-#'        "flame" = from yellow to red
+#'        \code{"flame"} = from yellow to red
 #'        
-#'        "blue" = from light blue to dark blue
+#'        \code{"blue"} = from light blue to dark blue
 #'        
-#'        "rainbow" = From blue,cyan, green, yellow, orange, red
+#'        \code{"rainbow"} = From blue,cyan, green, yellow, orange, red
 #'        
 #'         anything else = from light gray to black.
 #'          
 #' @param grad.scal (string) EXPERIMENTAL - controls how the gradient is 
 #'         inerpolated. 
 #'         
-#'         "normal" normally distributed
+#'         \code{"normal"} normally distributed
 #'         
-#'         "range"  scales it linearly from minimum to maximum value
+#'         \code{"range"}  scales it linearly from minimum to maximum value
 #'         
 #'         Please note that this argument is experimental and may be removed 
 #'         at any point. 
 #'         
 #' @param ... aditional arguments to be passed on to the cell plots
 #'  
-#'          - See ?plot(), ?boxplot(), ?hist() to see what aditional arguments 
-#'            you can pass on to them. 
+#'          - See \code{?plot()}, \code{?boxplot()}, \code{?hist()} to see what 
+#'            aditional arguments you can pass on to them. 
 #' 
 #' @examples 
 #' # load some built in data
@@ -105,7 +107,9 @@
 #' plot.cols(mtcars[,-1], mtcars[,1])
 #' plot.cols(iris[,-length(iris)], iris[,length(iris)], col=iris$Species)
 #' 
+#' @seealso \code{\link{plot}}, \code{\link{boxplot}}, \code{\link{hist}}
 #' @author Ronny Restrepo
+#' @keywords plot, plot.cols, plotting, column, columns
 #' @export plot.cols
 #===============================================================================
 plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray", 
