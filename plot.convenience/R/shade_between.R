@@ -1,3 +1,8 @@
+#TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
+#      secondary libraries which slow load time.
+#      Hmisc is used here for floating point matches
+#      find.matches() requires Hmisc
+
 # ==============================================================================
 #                                                                  SHADE BETWEEN
 # ==============================================================================

@@ -1,3 +1,9 @@
+#TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
+#      secondary libraries which slow load time.
+#      Hmisc is used here for floating point matches
+#      find.matches() requires Hmisc
+
+
 #' @import Hmisc
 #' @export shade_outside
 shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
