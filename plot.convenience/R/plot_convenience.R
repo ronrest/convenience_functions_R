@@ -3,9 +3,10 @@
 #       cell in a multi-grid set of plots. 
 
 
-library(Hmisc)  # Used for floating point matches
+#library(Hmisc)  # Used for floating point matches
 #TODO: Find a better alternative to Hmisc, that doesnt rely on so many other 
 #      secondary libraries which slow load time.
+#      find.matches() requires Hmisc
 
 
 shade_after <- function(x, y, boundary, ...){
@@ -73,6 +74,7 @@ shade_before <- function(x, y, boundary, ...){
 #'    x = seq(-9,9,by=0.01)
 #'    y = dnorm(x, mean=0, sd=3)
 #'    shade_between(x,y,-5,-2, type="l", lwd=3, shade.density=20)
+#' @import Hmisc
 #' @export
 shade_between <- function(x,y, lower, upper, primary=TRUE, shade.col="red", 
                           shade.border=NULL, 
@@ -116,7 +118,8 @@ shade_between <- function(x,y, lower, upper, primary=TRUE, shade.col="red",
 }
 
 
-
+#' @import Hmisc
+#' @export shade_outside
 shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
                           shade.lty=par("lty"), shade.density=NULL, 
                           shade.angle=45, ...){
