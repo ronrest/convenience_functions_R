@@ -1,12 +1,14 @@
 Package: plot.convenience
 Title: Conveneince functions for plotting
-Version: 0.1.1
+Version: 0.0.0.9002
 Date: 2015-05-29
-Authors: Ronny Restrepo
-Maintainer: Ronny Restrepo <ronny.coding@gmail.com>
-Description: Convenience functions for plotting 
+Authors@R: person("Ronny", "Restrepo", email = "ronny.coding@gmail.com",
+  role = c("aut", "cre"))
+Description: Convenience functions for plotting
 Depends: R (>= 3.1.0)
-License: GPL v2
+License: MIT + file LICENSE
 LazyData: true
 Imports: 
     Hmisc
+URL: https://github.com/ronrest/convenience_functions_R
+BugReports: https://github.com/ronrest/convenience_functions_R/issues
