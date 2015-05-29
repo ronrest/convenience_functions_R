@@ -75,8 +75,8 @@ shade_between <- function(x,y, lower, upper, primary=TRUE, shade.col="red",
     x2 = c(x2[1], x2, x2[length(x2)])   # Adds end points
     
     # Look for subset of points in y that correspont to the region of interest
-    lower_index = find.matches(x2[2], x, tol=tolerance, maxmatch=1)$matches[[1]]
-    upper_index = find.matches(x2[length(x2)-1], x, tol=tolerance, maxmatch=1)$matches[[1]]
+    lower_index = Hmisc::find.matches(x2[2], x, tol=tolerance, maxmatch=1)$matches[[1]]
+    upper_index = Hmisc::find.matches(x2[length(x2)-1], x, tol=tolerance, maxmatch=1)$matches[[1]]
     y2 = c(0, y[lower_index: upper_index],0)
     
     

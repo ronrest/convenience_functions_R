@@ -3,7 +3,6 @@
 #      Hmisc is used here for floating point matches
 #      find.matches() requires Hmisc
 
-
 #' @import Hmisc
 #' @export shade_outside
 shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL, 
@@ -73,7 +72,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
     x2 = c(x2[1], x2, x2[length(x2)])   # Add end points
     
     # Find subset of values in y that correspond to left hand region
-    lower_index = find.matches(x2[length(x2)], x, tol=tolerance, maxmatch=1)$matches[[1]]
+    lower_index = Hmisc::find.matches(x2[length(x2)], x, tol=tolerance, maxmatch=1)$matches[[1]]
     y2 = c(0, y[1: lower_index],0)      # Add end points
     
     
@@ -85,7 +84,7 @@ shade_outside <- function(x,y, lower, upper, shade.col="red", shade.border=NULL,
     x3 = c(x3[1], x3, x3[length(x3)])       # Add end points
     
     # Find subset of values in y that correspond to right hand region
-    upper_index = find.matches(x3[2], x, tol=tolerance, maxmatch=1)$matches[[1]]
+    upper_index = Hmisc::find.matches(x3[2], x, tol=tolerance, maxmatch=1)$matches[[1]]
     y3 = c(0, y[upper_index: length(x)],0)  # Add end points
     
     
