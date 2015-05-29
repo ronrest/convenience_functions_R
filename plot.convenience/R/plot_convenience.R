@@ -313,6 +313,40 @@ shade_between_bars <- function(x,y, lower, upper, shade.col="red", shade.border=
 #'      - "lines", "|", "line", "l"  line plot
 #'      
 #' @param labelCex (numeric) Controls size of the cell labels
+#' @param col the color(s) of the points/lines of the plot. You can use whatever 
+#'        value you would pass on to plot()
+#'        
+#'        You can pass an individual value, or a vector of values, eg you can 
+#'        specify that the color of the points be determined by the value of 
+#'        the output variable in your data. 
+#'        
+#' @param grad (logical)  Should gradient colours be used?
+#'        
+#'        TRUE - If you specified a vector of numeric values for col, 
+#'               then you can chose to have the color be a gradient instead of 
+#'               discrete colors. 
+#'        FALSE - (DEFAULT) values in 'col' will be interpreted as discrete 
+#'               color  changes.  
+#' @param grad.theme (string) Controls the gradient color
+#' 
+#'        "flame" = from yellow to red
+#'        
+#'        "blue" = from light blue to dark blue
+#'        
+#'        "rainbow" = From blue,cyan, green, yellow, orange, red
+#'        
+#'         anything else = from light gray to black.
+#'          
+#' @param grad.scal (string) EXPERIMENTAL - controls how the gradient is 
+#'         inerpolated. 
+#'         
+#'         "normal" normally distributed
+#'         
+#'         "range"  scales it linearly from minimum to maximum value
+#'         
+#'         Please note that this argument is experimental and may be removed 
+#'         at any point. 
+#'         
 #' @param ... aditional arguments to be passed on to the cell plots
 #'  
 #'          - See ?plot(), ?boxplot(), ?hist() to see what aditional arguments 
@@ -323,8 +357,11 @@ shade_between_bars <- function(x,y, lower, upper, shade.col="red", shade.border=
 #' data(mtcars)
 #' data(iris)
 #' 
-#' # Scatterplots of each column, with colors of points separated by Species Column 
-#' plot.cols(iris, col=iris$Species)
+#' # Scatterplots of each column, with colors separated by Species Column 
+#' plot.cols(iris, col=iris$Species, pch=19)
+#' 
+#' # Scatterplots of each column, with color gradient based on mpg Column 
+#' plot.cols(mtcars, col=mtcars$mpg, grad=T, pch=19)
 #' 
 #' # Density plot of each column of variables
 #' plot.cols(mtcars, type="density")
@@ -342,7 +379,9 @@ shade_between_bars <- function(x,y, lower, upper, shade.col="red", shade.border=
 #' @author Ronny Restrepo
 #' @export plot.cols
 #===============================================================================
-plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
+plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray", 
+                     grad=FALSE, grad.theme="flame", grad.scal="normal", 
+                     ...){
     # TODO:  Have the ability to specify values for gradient color. At the 
     #        monent we can use col=y, but color changes are discrete and all 
     #        over the place, which is ok for categorical output values, but for 
@@ -370,14 +409,51 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
         ngridRows = ceiling(n/ngridCols)
     }
     
-    # 
-    if (is.na(by)){by = 0}
-    
     # Take a snapshot of the current global plotting settings before modifying 
     # the settings to get a nice grid layout
     BU.par = par(c("mfrow", "mar", "mgp", "tck", "oma"))
     par(mfrow=c(ngridRows,ngridCols), mar=c(1, 1, 2, 0.5), 
         mgp = c(1.5, 0.3, 0), tck = -0.01, oma=c(1, 1, 0.5, 0.5))
+    
+    
+    #--------------------------------------------------------------------------
+    #                                            Set up Gradient Color Settings
+    #--------------------------------------------------------------------------
+    if (grad){
+        if (grad.theme=="rainbow"){
+            gradientTheme <- colorRampPalette(c("darkblue", "blue", "cyan", "green", 
+                                                "yellow", "orange", "red", "darkred"))
+        } else if (grad.theme == "blue"){
+            gradientTheme <- colorRampPalette(c("lightblue", "darkblue"))
+        } else if (grad.theme == "flame"){
+            gradientTheme <- colorRampPalette(c("yellow", "red"))
+        } else {
+            gradientTheme <- colorRampPalette(c("lightgrey", "black"))
+        }
+        
+        # Set the way the gradient is interpolated
+        # Linear scaling from min to max
+        if (grad.scal=="range"){
+            i = 2
+            y = x[,1]
+            col = x[,1]
+            range1 = range(col)
+            span1 = range1[2] - range1[1]
+            min1 = min(col)
+            rmult = 10/span1
+            newscale = (col - min1) * rmult 
+        
+        # Normal Scaling
+        } else if (grad.scal == "normal"){
+            newscale = 2 * (col - mean(col)) / sd(col) + 5    
+        
+        # No scaling 
+        } else {
+            newscale = col
+        }
+        col = gradientTheme(10)[newscale]
+    }
+    
     
     #``````````````````````````````````````````````````````````````````````````
     #                                               PLOTS OF ONLY COLUMN VALUES
@@ -387,7 +463,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     #--------------------------------------------------------------------------
     if (is.na(y[1]) & type=="scatter"){
         sapply(seq_along(x), function(i) {
-            plot(x[,i], main="", ...)
+            plot(x[,i], main="", col=col, ...)
             mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
         })    
     #--------------------------------------------------------------------------
@@ -395,7 +471,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     #--------------------------------------------------------------------------
     } else if (is.na(y[1]) & type=="hist"){
         sapply(seq_along(x), function(i) {
-            hist(as.numeric(x[,i]), main="", ...)
+            hist(as.numeric(x[,i]), main="", col=col, ...)
             mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
         })
     #--------------------------------------------------------------------------
@@ -403,7 +479,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     #--------------------------------------------------------------------------
     } else if (is.na(y[1]) & type=="density"){
         sapply(seq_along(x), function(i) {
-            plot(density(as.numeric(x[,i])), main="", ...)
+            plot(density(as.numeric(x[,i])), main="", col=col, ...)
             mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
         })
     #--------------------------------------------------------------------------
@@ -411,7 +487,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     #--------------------------------------------------------------------------
     } else if (is.na(y[1]) & type=="boxplot"){
         sapply(seq_along(x), function(i) {
-            boxplot(as.numeric(x[,i]), horizontal=T, main="", ...)
+            boxplot(as.numeric(x[,i]), horizontal=T, main="", col=col, ...)
             mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
         })
         
@@ -423,7 +499,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     #--------------------------------------------------------------------------
     } else if (!is.na(y[1]) & type=="scatter"){
         sapply(seq_along(x), function(i) {
-            plot(x[,i], y, main="", ...)
+            plot(x[,i], y, main="", col=col, ...)
             mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
         })
     #--------------------------------------------------------------------------
@@ -432,7 +508,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, ...){
     } else if (!is.na(y[1]) & (type=="line" | type=="|" | type=="lines" | 
                                type=="l")){
         sapply(seq_along(x), function(i) {
-            plot(x[,i], y, type="l", main="", ...)
+            plot(x[,i], y, type="l", main="", col=col, ...)
             mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
         })
     

@@ -4,7 +4,9 @@
 \alias{plot.cols}
 \title{plot.cols}
 \usage{
-\method{plot}{cols}(x, y = NA, type = "scatter", labelCex = 1, ...)
+\method{plot}{cols}(x, y = NA, type = "scatter", labelCex = 1,
+  col = "darkgray", grad = FALSE, grad.theme = "flame",
+  grad.scal = "normal", ...)
 }
 \arguments{
 \item{x}{(dataframe of numerics) dataframe that will act as the x values you
@@ -37,6 +39,41 @@ want to plot}
 
 \item{labelCex}{(numeric) Controls size of the cell labels}
 
+\item{col}{the color(s) of the points/lines of the plot. You can use whatever
+       value you would pass on to plot()
+
+       You can pass an individual value, or a vector of values, eg you can
+       specify that the color of the points be determined by the value of
+       the output variable in your data.}
+
+\item{grad}{(logical)  Should gradient colours be used?
+
+       TRUE - If you specified a vector of numeric values for col,
+              then you can chose to have the color be a gradient instead of
+              discrete colors.
+       FALSE - (DEFAULT) values in 'col' will be interpreted as discrete
+              color  changes.}
+
+\item{grad.theme}{(string) Controls the gradient color
+
+       "flame" = from yellow to red
+
+       "blue" = from light blue to dark blue
+
+       "rainbow" = From blue,cyan, green, yellow, orange, red
+
+        anything else = from light gray to black.}
+
+\item{grad.scal}{(string) EXPERIMENTAL - controls how the gradient is
+        inerpolated.
+
+        "normal" normally distributed
+
+        "range"  scales it linearly from minimum to maximum value
+
+        Please note that this argument is experimental and may be removed
+        at any point.}
+
 \item{...}{aditional arguments to be passed on to the cell plots
 
          - See ?plot(), ?boxplot(), ?hist() to see what aditional arguments
@@ -62,8 +99,11 @@ Depending on whether you provide a value for y, there are different
 data(mtcars)
 data(iris)
 
-# Scatterplots of each column, with colors of points separated by Species Column
-plot.cols(iris, col=iris$Species)
+# Scatterplots of each column, with colors separated by Species Column
+plot.cols(iris, col=iris$Species, pch=19)
+
+# Scatterplots of each column, with color gradient based on mpg Column
+plot.cols(mtcars, col=mtcars$mpg, grad=T, pch=19)
 
 # Density plot of each column of variables
 plot.cols(mtcars, type="density")
