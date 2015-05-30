@@ -2,7 +2,7 @@
 
 export(plot.cols)
 export(plot_distribution)
-export(plot_residuals)
+export(plot_surrounding_residuals)
 export(shade_between)
 export(shade_outside)
 import(Hmisc)

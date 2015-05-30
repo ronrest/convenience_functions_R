@@ -1,16 +1,15 @@
 # ==============================================================================
-#                                                                 PLOT_RESIDUALS 
+#                                                     PLOT_SURROUNDING_RESIDUALS 
 # ==============================================================================
-#' plot_residuals
-#' 
-#' Plots the residuals (either sum of squared errors, or mean squared error) for
-#' values surrounding a central point that you chose. 
-#' 
-#' This can be used to 
-#' visualise whether some value you picked out is indeed a local minimum, or 
-#' it can be used to visually explore possible values via an informed trial and 
-#' error (where the plot may guide you in which direction to follow). You chose 
-#' how wide to make your search through the "dev" argument. 
+#' @title plot_surrounding_residuals
+#' @description Creates a plot of what the residuals are for values surrounding 
+#'      a central point that you specify. You specify how much to deviate from 
+#'      the central point, and what measure of error you want. 
+#' @details This can be used to visualise whether some value you picked out is 
+#' indeed a local minimum, or it can be used to visually explore possible values 
+#' via an informed trial and error (where the plot may guide you in which 
+#' direction to follow). You chose how wide to make your search through the 
+#' \code{"dev"} argument. 
 #' 
 #' @param x (vector of numerics) The empirical values
 #' @param center (numeric) The value you wish to center you search around
@@ -24,21 +23,25 @@
 #'        (DEFAULT = "SSE")
 #' 
 #' @param res (integer)  Sets the resolution of the plot. Calculated as the 
-#' number of points between the (center - dev) and  (center + dev). 
+#'      number of points that lie between (center - dev) and  (center + dev). 
 #' 
-#' DEFAULT = 100
+#'      DEFAULT = 100
 #' @param ... other arguments to be passed to plot
 #' @examples
 #' x <- c(12,11,13,15,16,12,11,9,14,11,10,7,15)
-#' plot_residual_curve(x, center=mean(x), dev=0.6, type="MSE")
-#' plot_residual_curve(x, center=mean(x), dev=2, type="SSE")
+#' plot_surrounding_residuals(x)
+#' plot_surrounding_residuals(x, center=7, dev=10)
+#' plot_surrounding_residuals(x, center=13, dev=2, type="MSE")
+#' plot_surrounding_residuals(x, center=13, dev=2, type="SSE")
 #' 
 #' @author Ronny Restrepo
-#' @export
-plot_residuals <- function(x, center=0, dev=1, type="SSE", res=100, ...){
+#' @export plot_surrounding_residuals
+# ==============================================================================
+plot_surrounding_residuals <- 
+    function(x, center=mean(x), dev=2*sd(x), type="SSE", res=100, ...){
     mean.x = mean(x)
-    min = mean.x - dev
-    max = mean.x + dev
+    min = center - dev
+    max = center + dev
     mus = seq(min, max, by = (max-min)/res)
     if (type=="MSE"){
         n = length(x)
@@ -52,7 +55,7 @@ plot_residuals <- function(x, center=0, dev=1, type="SSE", res=100, ...){
              main="Residuals Plot", xlab="Values of mu considered", 
              ylab="Sum of Squared Errors", ...)    
     }
-    abline(v=mean.x, col="red")
+    abline(v=center, col="red")
 }
 
 
