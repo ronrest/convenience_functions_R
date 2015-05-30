@@ -154,6 +154,7 @@ plot.cols <-function(x, y=NA, type="auto", labelCex=1, col="darkgray",
     #--------------------------------------------------------------------------
     #                                            Set up Gradient Color Settings
     #--------------------------------------------------------------------------
+    if (grad & is.factor(col)){col = as.numeric(col)}
     if (grad & length(col) != nrow(x)){
         warning("When using gradient, 'col' should be same lenght as the ",
                 "number of rows in x. Plotting witout any color.")
