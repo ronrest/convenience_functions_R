@@ -1,4 +1,12 @@
+# TODO: Implement option to plot as grid of cells. 
+# TODO: check that the models is a list, if not, then proceed with just the 
+#      one model (perhaps place it inside a list to make it compatible 
+#      with the rest of the code)
+# TODO: FIx axis labels to give useful labels. Maybe add a main title too. 
+# TODO: find if there is a way of setting alpha transperancy for points like
+#       there is in ggplot2
 # TODO: implement plotting of residuals like in ggplot_residuals()
+
 
 
 # =====================================
@@ -73,12 +81,6 @@
 #===============================================================================
 plot_models <- function(models, scatter=TRUE, scatterColor="lightgray", 
                         modelColor="darkorange", modelWidth=2){
-    #TODO: check that the models is a list, if not, then proceed with just the 
-    #      one model (perhaps place it inside a list to make it compatible 
-    #      with the rest of the code)
-    # TODO: FIx axis labels to give useful labels. Maybe add a main title too. 
-    # TODO: find if there is a way of setting alpha transperancy for points like
-    #       there is in ggplot2
     
     # Make sure there are enough color and width elements for each model
     modelColor = rep_len(modelColor, length(models))
