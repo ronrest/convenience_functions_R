@@ -70,9 +70,9 @@ arbitrary model in the future.
 \examples{
 data(iris)
 model = lm(iris$Petal.Length ~ iris$Sepal.Length)
-ggmodel_plot(model, points=TRUE, residuals=TRUE, point.col="green")
+ggplot_model(model, points=TRUE, residuals=TRUE, point.col="green")
 
-ggmodel_plot(model, points=FALSE, residuals=TRUE, point.size=4, resid.width=5, resid.alpha=0.2, resid.col="red", point.border=2)
+ggplot_model(model, points=FALSE, residuals=TRUE, point.size=4, resid.width=5, resid.alpha=0.2, resid.col="red", point.border=2)
 }
 \author{
 Ronny Restrepo
