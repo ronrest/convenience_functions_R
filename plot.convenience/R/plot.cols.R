@@ -1,4 +1,7 @@
 ################################################################################
+# TODO: Add option 'by' to ploy by groups. Eg, if you specify 'boxplot' then 
+#       you can draw each boxplot within a cell to be representing a subset of 
+#       the data specified by some category column. 
 # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
 #            flips back to color that is used for low values. 
 #
