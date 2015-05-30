@@ -1,5 +1,4 @@
 ################################################################################
-# TODO: BUG: when data contains factor types, and grad=T is used, it crashes.
 # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
 #            flips back to color that is used for low values. 
 #
@@ -7,6 +6,10 @@
 #       results for highly skewed data. I suspect it might give wrong color
 #       for very high values more than 4 standard deviations above the mean.
 #       Test this. 
+# TODO: Im not sure if the colors used when grad=T is used on factor type 
+#       columns are actually meaningful. Try find a way to check this, so people
+#       dont mistakenly interpret some relationship where there isnt any. 
+#
 ################################################################################
 
 #===============================================================================
