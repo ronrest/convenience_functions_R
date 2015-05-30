@@ -1,3 +1,20 @@
+################################################################################
+# TODO: BUG: when data contains factor types, and grad=T is used, it crashes.
+# TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
+#            flips back to color that is used for low values. 
+#
+# TODO: Im not entirely confident that grad.scal="range" will give accurate 
+#       results for highly skewed data. I suspect it might give wrong color
+#       for very high values more than 4 standard deviations above the mean.
+#       Test this. 
+# TODO:  Have the ability to specify values for gradient color. At the 
+#        monent we can use col=y, but color changes are discrete and all 
+#        over the place, which is ok for categorical output values, but for 
+#        continuous output variables we would want gradients. 
+#
+# TODO: COnsider splitting this function up, having some sections executed 
+#       by helper functions. Eg, the theme, and grid setups. 
+################################################################################
 
 #===============================================================================
 #                                                                      PLOT.COLS
@@ -108,7 +125,7 @@
 #' # Histogram each variable
 #' plot.cols(iris, type="hist")
 #' 
-#' # output variable as a function of each predicto variable
+#' # output variable as a function of each predicton variable
 #' plot.cols(mtcars[,-1], mtcars[,1])
 #' plot.cols(iris[,-length(iris)], iris[,length(iris)], col=iris$Species)
 #' 
@@ -120,32 +137,123 @@
 plot.cols <-function(x, y=NA, type="auto", labelCex=1, col="darkgray", 
                      grad=FALSE, grad.theme="flame", grad.scal="normal", 
                      ...){
-    # TODO: BUG: when data contains factor types, and grad=T is used, it crashes.
-    # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
-    #            flips back to color that is used for low values. 
-    #
-    # TODO: Im not entirely confident that grad.scal="range" will give accurate 
-    #       results for highly skewed data. I suspect it might give wrong color
-    #       for very high values more than 4 standard deviations above the mean.
-    #       Test this. 
-    # TODO:  Have the ability to specify values for gradient color. At the 
-    #        monent we can use col=y, but color changes are discrete and all 
-    #        over the place, which is ok for categorical output values, but for 
-    #        continuous output variables we would want gradients. 
-    #
-    # TODO: COnsider splitting this function up, having some sections executed 
-    #       by helper functions. Eg, the theme, and grid setups. 
     #--------------------------------------------------------------------------
     #                                             Set up Grid and Cell Settings
     #--------------------------------------------------------------------------
-    # calculate number of cells needed
-    if (is.null(ncol(x))){    # Hack to handle input of a single column/vector
-        n = 1
-        x = data.frame(x)
-    } else {
-        n = ncol(x)    
-    }
+    # Take a snapshot of the current global plotting settings
+    BU.par = par(c("mfrow", "mar", "mgp", "tck", "oma"))
     
+    # Hack to handle input of a single column/vector
+    ncols = ncol(x)
+    if (is.null(ncols)){      
+        ncols = 1
+        x = data.frame(x)
+    }
+    # Set New global plotting settings for a grid layout
+    .set.grid.parameters(ncols)
+    
+    #--------------------------------------------------------------------------
+    #                                            Set up Gradient Color Settings
+    #--------------------------------------------------------------------------
+    if (grad & length(col) != nrow(x)){
+        warning("When using gradient, 'col' should be same lenght as the ",
+                "number of rows in x. Plotting witout any color.")
+        col = "darkgray"
+    } else if (grad){
+        gradientTheme = .create.theme(grad.theme, grad.scal)
+        rescaledVals = .gradient.interpolation(col, scale.mode="normal")
+        col = gradientTheme(10)[rescaledVals]
+    } 
+    
+    #**************************************************************************
+    #                                               PLOTS OF ONLY COLUMN VALUES
+    #**************************************************************************
+    #--------------------------------------------------------------------------
+    #                                                  Scatter Plot of X values
+    #--------------------------------------------------------------------------
+    if (is.na(y[1]) & (type=="scatter" | type=="auto")){
+        sapply(seq_along(x), function(i) {
+            plot(x[,i], main="", col=col, ...)
+            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
+        })    
+        #----------------------------------------------------------------------
+        #                                                 Histogram of X values
+        #----------------------------------------------------------------------
+    } else if (is.na(y[1]) & type=="hist"){
+        sapply(seq_along(x), function(i) {
+            hist(as.numeric(x[,i]), main="", col=col, ...)
+            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
+        })
+        #----------------------------------------------------------------------
+        #                                              Density Plot of X values
+        #----------------------------------------------------------------------
+    } else if (is.na(y[1]) & type=="density"){
+        sapply(seq_along(x), function(i) {
+            plot(density(as.numeric(x[,i])), main="", col=col, ...)
+            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
+        })
+        #----------------------------------------------------------------------
+        #                                          Box-Whisker Plot of X values
+        #----------------------------------------------------------------------
+    } else if (is.na(y[1]) & type=="boxplot"){
+        sapply(seq_along(x), function(i) {
+            boxplot(as.numeric(x[,i]), horizontal=T, main="", col=col, ...)
+            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
+        })
+        
+        #**********************************************************************
+        #                               PLOTS OF Y AS FUNCTION OF COLUMN VALUES
+        #**********************************************************************
+        #----------------------------------------------------------------------
+        #                                                 Scatter Plot of Y ~ X
+        #----------------------------------------------------------------------
+    } else if (!is.na(y[1]) & (type=="scatter" | type=="auto")){
+        sapply(seq_along(x), function(i) {
+            plot(x[,i], y, main="", col=col, ...)
+            mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
+        })
+        #----------------------------------------------------------------------
+        #                                                    Line Plot of Y ~ X
+        #----------------------------------------------------------------------
+    } else if (!is.na(y[1]) & (type=="line" | type=="|" | type=="lines" | 
+                                   type=="l")){
+        sapply(seq_along(x), function(i) {
+            plot(x[,i], y, type="l", main="", col=col, ...)
+            mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
+        })
+        
+        #**********************************************************************
+        #                                                    ILEGAL COMBINATION
+        #**********************************************************************
+    } else {
+        warning("I'm affraid I can't let you do that!\n",
+                "  You have asked for a combination of 'y' and 'type' that is ",
+                "not allowed. \n",
+                "  Type ?plot.cols to see what values are allowed.")
+        
+    }
+    # Return the global plot parameters to their previous settings
+    par(BU.par)
+}
+
+
+
+
+
+################################################################################
+#                                                               HELPER FUNCTIONS
+################################################################################
+
+#===============================================================================
+#                                                           .SET.GRID.PARAMETERS
+#===============================================================================
+#' Helper function to set global parameters of par() that are appropriate for 
+#' plotting n number of cells. 
+#' 
+#' You secify n, and it automatically calculates what size the grid, and other 
+#' plotting parameters to generate a nice layout.  
+#===============================================================================
+.set.grid.parameters <- function(n){
     # Calculate number of cells per row/column to plot
     if (n == 1){
         ngridRows = 1
@@ -157,117 +265,64 @@ plot.cols <-function(x, y=NA, type="auto", labelCex=1, col="darkgray",
         ngridCols = ceiling(sqrt(n))
         ngridRows = ceiling(n/ngridCols)
     }
-    
-    # Take a snapshot of the current global plotting settings before modifying 
-    # the settings to get a nice grid layout
-    BU.par = par(c("mfrow", "mar", "mgp", "tck", "oma"))
     par(mfrow=c(ngridRows,ngridCols), mar=c(1, 1, 2, 0.5), 
         mgp = c(1.5, 0.3, 0), tck = -0.01, oma=c(1, 1, 0.5, 0.5))
-    
-    
-    #--------------------------------------------------------------------------
-    #                                            Set up Gradient Color Settings
-    #--------------------------------------------------------------------------
-    if (grad){
-        if (grad.theme=="rainbow"){
-            gradientTheme <- colorRampPalette(c("darkblue", "blue", "cyan", "green", 
-                                                "yellow", "orange", "red", "darkred"))
-        } else if (grad.theme == "blue"){
-            gradientTheme <- colorRampPalette(c("lightblue", "darkblue"))
-        } else if (grad.theme == "flame"){
-            gradientTheme <- colorRampPalette(c("yellow", "red"))
-        } else {
-            gradientTheme <- colorRampPalette(c("lightgrey", "black"))
-        }
-        
-        # Set the way the gradient is interpolated
-        # Linear scaling from min to max
-        if (grad.scal=="range"){
-            range1 = range(col)
-            span1 = range1[2] - range1[1]
-            min1 = min(col)
-            rmult = 10/span1
-            newscale = (col - min1) * rmult 
-            
-            # Normal Scaling
-        } else if (grad.scal == "normal"){
-            newscale = 2 * (col - mean(col)) / sd(col) + 5    
-            
-            # No scaling 
-        } else {
-            newscale = col
-        }
-        col = gradientTheme(10)[newscale]
-    }
-    
-    
-    #``````````````````````````````````````````````````````````````````````````
-    #                                               PLOTS OF ONLY COLUMN VALUES
-    #``````````````````````````````````````````````````````````````````````````
-    #--------------------------------------------------------------------------
-    #                                                  Scatter Plot of X values
-    #--------------------------------------------------------------------------
-    if (is.na(y[1]) & (type=="scatter" | type="auto")){
-        sapply(seq_along(x), function(i) {
-            plot(x[,i], main="", col=col, ...)
-            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
-        })    
-        #--------------------------------------------------------------------------
-        #                                                     Histogram of X values
-        #--------------------------------------------------------------------------
-    } else if (is.na(y[1]) & type=="hist"){
-        sapply(seq_along(x), function(i) {
-            hist(as.numeric(x[,i]), main="", col=col, ...)
-            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
-        })
-        #--------------------------------------------------------------------------
-        #                                                  Density Plot of X values
-        #--------------------------------------------------------------------------
-    } else if (is.na(y[1]) & type=="density"){
-        sapply(seq_along(x), function(i) {
-            plot(density(as.numeric(x[,i])), main="", col=col, ...)
-            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
-        })
-        #--------------------------------------------------------------------------
-        #                                              Box-Whisker Plot of X values
-        #--------------------------------------------------------------------------
-    } else if (is.na(y[1]) & type=="boxplot"){
-        sapply(seq_along(x), function(i) {
-            boxplot(as.numeric(x[,i]), horizontal=T, main="", col=col, ...)
-            mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
-        })
-        
-        #``````````````````````````````````````````````````````````````````````````
-        #                                   PLOTS OF Y AS FUNCTION OF COLUMN VALUES
-        #``````````````````````````````````````````````````````````````````````````
-        #--------------------------------------------------------------------------
-        #                                                     Scatter Plot of Y ~ X
-        #--------------------------------------------------------------------------
-    } else if (!is.na(y[1]) & type=="scatter"){
-        sapply(seq_along(x), function(i) {
-            plot(x[,i], y, main="", col=col, ...)
-            mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
-        })
-        #--------------------------------------------------------------------------
-        #                                                        Line Plot of Y ~ X
-        #--------------------------------------------------------------------------
-    } else if (!is.na(y[1]) & (type=="line" | type=="|" | type=="lines" | 
-                                   type=="l")){
-        sapply(seq_along(x), function(i) {
-            plot(x[,i], y, type="l", main="", col=col, ...)
-            mtext(paste("y ~", colnames(x)[i]), side=3, line=0.5, cex=labelCex)  
-        })
-        
-        #``````````````````````````````````````````````````````````````````````````
-        #                                                        ILEGAL COMBINATION
-        #``````````````````````````````````````````````````````````````````````````
-    } else {
-        warning("I'm affraid I can't let you do that!\n",
-                "  You have asked for a combination of 'y' and 'type' that is ",
-                "not allowed. \n",
-                "  Type ?plot.cols to see what values are allowed.")
-        
-    }
-    # Return the global plot parameters to their previous state
-    par(BU.par)
 }
+
+#===============================================================================
+#                                                                  .CREATE.THEME
+#===============================================================================
+#' generates a gradient object based on a preset theme
+#' 
+#===============================================================================
+.create.theme <- function(grad.theme="flame", grad.scal="normal"){
+    if (grad.theme=="rainbow"){
+        gradientTheme <- colorRampPalette(c("darkblue", "blue", "cyan", "green", 
+                                            "yellow", "orange", "red", "darkred"))
+    } else if (grad.theme == "blue"){
+        gradientTheme <- colorRampPalette(c("lightblue", "darkblue"))
+    } else if (grad.theme == "flame"){
+        gradientTheme <- colorRampPalette(c("yellow", "red"))
+    } else {
+        gradientTheme <- colorRampPalette(c("lightgrey", "black"))
+    }
+    return(gradientTheme)
+}
+
+#===============================================================================
+#                                                        .GRADIENT.INTERPOLATION
+#===============================================================================
+#' takes a vector of numerical values and rescales them to be between 0 anf 10. 
+#' You can speccify the method of interpolating the scaling. 
+#' 
+#' @param vals (vector of numerics)
+#' @param scale.mode 
+#' 
+#'      "normal"
+#'      
+#'      "range"
+#'      
+#'      any other value, returns the original data, unscaled. 
+#' @return a vector of the rescaled values between 0 and 10. 
+#===============================================================================
+.gradient.interpolation <- function(vals, scale.mode="normal"){
+    # Set the way the gradient is interpolated
+    # Linear scaling from min to max
+    if (scale.mode=="range"){
+        range1 = range(vals)
+        span1 = range1[2] - range1[1]
+        min1 = min(vals)
+        rmult = 10/span1
+        newscale = (vals - min1) * rmult 
+        
+        # Normal Scaling
+    } else if (scale.mode == "normal"){
+        newscale = 2 * (vals - mean(vals)) / sd(vals) + 5    
+        
+        # No scaling 
+    } else {
+        newscale = vals
+    }
+    return(newscale)
+}
+

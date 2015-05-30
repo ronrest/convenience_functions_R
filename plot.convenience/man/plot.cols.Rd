@@ -121,7 +121,7 @@ plot.cols(iris, type="boxplot")
 # Histogram each variable
 plot.cols(iris, type="hist")
 
-# output variable as a function of each predicto variable
+# output variable as a function of each predicton variable
 plot.cols(mtcars[,-1], mtcars[,1])
 plot.cols(iris[,-length(iris)], iris[,length(iris)], col=iris$Species)
 }
