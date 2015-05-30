@@ -4,7 +4,7 @@
 \alias{plot.cols}
 \title{plot.cols}
 \usage{
-\method{plot}{cols}(x, y = NA, type = "scatter", labelCex = 1,
+\method{plot}{cols}(x, y = NA, type = "auto", labelCex = 1,
   col = "darkgray", grad = FALSE, grad.theme = "flame",
   grad.scal = "normal", ...)
 }
@@ -22,6 +22,9 @@ want to plot}
 \item{type}{(string) the type of plot to use for each cell.
 
      VALID VALUES WHEN \code{y=NA} :
+
+     - \code{"auto"} (DEFAULT) automatically determines a good type for the
+       data
 
      - \code{"scatter"} scatter plot of x values as function of row index
 
@@ -70,7 +73,9 @@ want to plot}
 
         \code{"normal"} normally distributed
 
-        \code{"range"}  scales it linearly from minimum to maximum value
+        \code{"range"}  scales it linearly from minimum to maximum value.
+        NOTE that this option gives buggy results. Its not fit for production
+        use yet.
 
         Please note that this argument is experimental and may be removed
         at any point.}

@@ -28,6 +28,9 @@
 #' 
 #'      VALID VALUES WHEN \code{y=NA} : 
 #'      
+#'      - \code{"auto"} (DEFAULT) automatically determines a good type for the 
+#'        data 
+#'      
 #'      - \code{"scatter"} scatter plot of x values as function of row index
 #'      
 #'      -\code{"hist"} histogram of the values
@@ -114,7 +117,7 @@
 #' @keywords plot, plot.cols, plotting, column, columns
 #' @export plot.cols
 #===============================================================================
-plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray", 
+plot.cols <-function(x, y=NA, type="auto", labelCex=1, col="darkgray", 
                      grad=FALSE, grad.theme="flame", grad.scal="normal", 
                      ...){
     # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
@@ -203,7 +206,7 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray",
     #--------------------------------------------------------------------------
     #                                                  Scatter Plot of X values
     #--------------------------------------------------------------------------
-    if (is.na(y[1]) & type=="scatter"){
+    if (is.na(y[1]) & (type=="scatter" | type="auto")){
         sapply(seq_along(x), function(i) {
             plot(x[,i], main="", col=col, ...)
             mtext(colnames(x)[i], side=3, line=0.5, cex = labelCex)  
