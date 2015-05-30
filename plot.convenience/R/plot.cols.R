@@ -73,7 +73,9 @@
 #'         
 #'         \code{"normal"} normally distributed
 #'         
-#'         \code{"range"}  scales it linearly from minimum to maximum value
+#'         \code{"range"}  scales it linearly from minimum to maximum value. 
+#'         NOTE that this option gives buggy results. Its not fit for production 
+#'         use yet.  
 #'         
 #'         Please note that this argument is experimental and may be removed 
 #'         at any point. 
@@ -115,6 +117,8 @@
 plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray", 
                      grad=FALSE, grad.theme="flame", grad.scal="normal", 
                      ...){
+    # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
+    #            flips back to color that is used for low values. 
     # TODO:  Have the ability to specify values for gradient color. At the 
     #        monent we can use col=y, but color changes are discrete and all 
     #        over the place, which is ok for categorical output values, but for 
@@ -170,9 +174,6 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray",
         # Set the way the gradient is interpolated
         # Linear scaling from min to max
         if (grad.scal=="range"){
-            i = 2
-            y = x[,1]
-            col = x[,1]
             range1 = range(col)
             span1 = range1[2] - range1[1]
             min1 = min(col)
