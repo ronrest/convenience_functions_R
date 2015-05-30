@@ -120,6 +120,7 @@
 plot.cols <-function(x, y=NA, type="auto", labelCex=1, col="darkgray", 
                      grad=FALSE, grad.theme="flame", grad.scal="normal", 
                      ...){
+    # TODO: BUG: when data contains factor types, and grad=T is used, it crashes.
     # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
     #            flips back to color that is used for low values. 
     #
