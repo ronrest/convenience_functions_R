@@ -7,13 +7,6 @@
 #       results for highly skewed data. I suspect it might give wrong color
 #       for very high values more than 4 standard deviations above the mean.
 #       Test this. 
-# TODO:  Have the ability to specify values for gradient color. At the 
-#        monent we can use col=y, but color changes are discrete and all 
-#        over the place, which is ok for categorical output values, but for 
-#        continuous output variables we would want gradients. 
-#
-# TODO: COnsider splitting this function up, having some sections executed 
-#       by helper functions. Eg, the theme, and grid setups. 
 ################################################################################
 
 #===============================================================================
