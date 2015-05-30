@@ -119,6 +119,11 @@ plot.cols <-function(x, y=NA, type="scatter", labelCex=1, col="darkgray",
                      ...){
     # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
     #            flips back to color that is used for low values. 
+    #
+    # TODO: Im not entirely confident that grad.scal="range" will give accurate 
+    #       results for highly skewed data. I suspect it might give wrong color
+    #       for very high values more than 4 standard deviations above the mean.
+    #       Test this. 
     # TODO:  Have the ability to specify values for gradient color. At the 
     #        monent we can use col=y, but color changes are discrete and all 
     #        over the place, which is ok for categorical output values, but for 
