@@ -1,4 +1,8 @@
 # TODO: Implement option to plot as grid of cells. 
+# TODO: Option to chose which predictor variable(s) to use for models with  
+#       multiple predictor variables (specified bey either index, or name) , 
+#       along with each predictor variable as separate cell in a grid plot. 
+#       Multiple models are overlayed in each cell for the same predictor.
 # TODO: check that the models is a list, if not, then proceed with just the 
 #      one model (perhaps place it inside a list to make it compatible 
 #      with the rest of the code)
