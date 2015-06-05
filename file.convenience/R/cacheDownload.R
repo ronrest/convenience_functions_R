@@ -1,5 +1,3 @@
-library("curl")
-
 #===============================================================================
 #                                                                 CACHE DOWNLOAD
 #===============================================================================
@@ -16,10 +14,11 @@ library("curl")
 #' @author Ronny Restrepo
 #' @note This function has only been tested on Linux, it might not work on other 
 #'       operating systems yet. 
-#' 
+#' @import curl
 #' @export
 cacheDownload <- function(url, dataDir, localName){
     require("curl")
+    # TODO: Handle circumstances where dataDir is "" or "." or "./"
     # TODO: include option to override existing local file, eg, if there may be 
     #       reason to believe that the data has changed. 
     
