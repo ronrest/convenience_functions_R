@@ -1,7 +1,11 @@
 ################################################################################
-# TODO: Add option 'by' to ploy by groups. Eg, if you specify 'boxplot' then 
+# TODO: Add option 'by' to plot by groups. Eg, if you specify 'boxplot' then 
 #       you can draw each boxplot within a cell to be representing a subset of 
-#       the data specified by some category column. 
+#       the data specified by some category column.
+# TODO: Add option to fix the axis scales, so that all cells display same range 
+#       of x and y values, thus making it easier to compare all cells with each 
+#       other. (currently uses auto centering of axis scales)
+# 
 # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
 #            flips back to color that is used for low values. 
 #
