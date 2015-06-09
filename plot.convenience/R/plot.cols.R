@@ -5,7 +5,10 @@
 # TODO: Add option to fix the axis scales, so that all cells display same range 
 #       of x and y values, thus making it easier to compare all cells with each 
 #       other. (currently uses auto centering of axis scales)
-# 
+# TODO: add option to plot the scatter dots with the size being determined by 
+#       the frequency of the values in order to relay information that some 
+#       values carry more weight than others. 
+# TODO: Allow y to be a string, which specifies a column name in x. 
 # TODO: BUG: using grad.scal="range" gives wrong color for upper values, it
 #            flips back to color that is used for low values. 
 #
