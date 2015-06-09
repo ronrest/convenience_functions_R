@@ -3,9 +3,6 @@
 #       multiple predictor variables (specified bey either index, or name) , 
 #       along with each predictor variable as separate cell in a grid plot. 
 #       Multiple models are overlayed in each cell for the same predictor.
-# TODO: check that the models is a list, if not, then proceed with just the 
-#      one model (perhaps place it inside a list to make it compatible 
-#      with the rest of the code)
 # TODO: FIx axis labels to give useful labels. Maybe add a main title too. 
 # TODO: find if there is a way of setting alpha transperancy for points like
 #       there is in ggplot2
@@ -80,11 +77,17 @@
 #' plot_models(models, modelColor=modcols, modelWidth=c(8,2,4,8,3))
 #' 
 #' @seealso \code{\link{plot.cols}}
-#' @keywords plot, plot_models, plotting, modelling, models, model
+#' @keywords plot, plot_models, plotting, modelling, models, model, 
+#'           plot.convenience
 #' @export plot_models 
 #===============================================================================
 plot_models <- function(models, scatter=TRUE, scatterColor="lightgray", 
                         modelColor="darkorange", modelWidth=2){
+    
+    # make sure that models is a list of models
+    if (class(models) != "list"){
+        models = list(models)
+    }
     
     # Make sure there are enough color and width elements for each model
     modelColor = rep_len(modelColor, length(models))
