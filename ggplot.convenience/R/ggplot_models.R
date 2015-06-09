@@ -69,9 +69,12 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
     # ggplot_residuals(diamond.model)
     #
     # But if i name it just model instead of diamond.model it is fine. 
-    
+    #
+    # TODO: consider using coef(model)
     # TODO: Add option for plotting confidence interval for regression line.
     # TODO: Add option for plotting confidence interval for prediction
+    # TODO: Option for plotting based on a single value (to be interpreted as a 
+    #       horizontal line), and x values instead of a model object. 
     require("ggplot2")
     
     g = ggplot(model$model, aes(x=model$model[,2], y=resid(model)), ...)
