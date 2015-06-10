@@ -53,7 +53,7 @@ library(ggplot2)
 #' line.alpha=0.2, line.col="red")
 #' 
 #' @author Ronny Restrepo
-#' @export
+#' @export ggplot_residuals
 ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue", 
                              point.alpha=0.4, point.size=6, point.border=1, 
                              line.col="orange", line.alpha=0.7, line.width=1, 
@@ -62,14 +62,13 @@ ggplot_residuals <- function(model, points=TRUE, lines=FALSE, point.col="blue",
     #   Error in data.frame(x = c(4.18333804327995, 1.81955364346504, 5.80704394401982,  : 
     #   arguments imply differing number of rows: 100, 48
     # 
-    # This occurs with 
-    # library(UsingR)
-    # data(diamond)
-    # diamond.model = lm(diamond$price ~ diamond$carat)
-    # ggplot_residuals(diamond.model)
-    #
-    # But if i name it just model instead of diamond.model it is fine. 
-    #
+    # This occurs even when the "$" operator is not used as an argument to lm()
+    # 
+    # Example: 
+    # dfa = data.frame(x = 1:10, y = rep(4, 10))
+    # dfa_model = lm(y ~ x, data=dfa)
+    # ggplot_residuals(dfa_model)
+    # 
     # TODO: consider using coef(model)
     # TODO: Add option for plotting confidence interval for regression line.
     # TODO: Add option for plotting confidence interval for prediction
