@@ -7,7 +7,8 @@
 # TODO: implement plotting of residuals like in ggplot_residuals()
 # TODO: plot confidence interval of model using: 
 #       pred.w.clim <- predict(model, model.x, interval = "confidence")
-#
+#       Confidence interval should be shaded in same color as model line, but 
+#       with lower alpha. 
 
 
 # =====================================
