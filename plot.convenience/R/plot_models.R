@@ -5,7 +5,9 @@
 #       Multiple models are overlayed in each cell for the same predictor.
 # TODO: FIx axis labels to give useful labels. Maybe add a main title too. 
 # TODO: implement plotting of residuals like in ggplot_residuals()
-
+# TODO: plot confidence interval of model using: 
+#       pred.w.clim <- predict(model, model.x, interval = "confidence")
+#
 
 
 # =====================================
