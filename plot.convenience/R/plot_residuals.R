@@ -30,24 +30,51 @@
 #' @param lines (logical) Draw the residuals as lines? 
 #' 
 #'      (Default is FALSE)
-#' @param point_col the color of the points
-#'  
-#'      (Default is "Blue")
-#' @param point_alpha (numeric) the alpha of the points. 
+#' @param ctm (logical) Compare To the Mean? Compare the residuals left over 
+#'      from the model compared to the residuals that would exist if the mean 
+#'      of the putcome variable was used as the estimator. 
+#'      
+#'      (Default is FALSE)
+#' @param point_col Color of the points used for residuals from the model. 
+#'      
+#'      See here for a chart of possible colors: 
+#'      \url{http://research.stowers-institute.org/efg/R/Color/Chart/}
+#'      
+#'      (Default is "blue")
+#' @param point_alpha (numeric) Alpha of points used for residuals from model.
 #' 
 #'      (Default is 0.3)
-#' @param point_size (numeric) The size of the points. 
+#' @param point_size (numeric) Size of points used for residuals from the model.
 #' 
 #'      (Default is 2)
-#' @param line_col The color od the lines. 
+#' @param line_col Color of the lines used for residuals from the model.
 #' 
-#'      (Default is "orange")
-#' @param line_alpha (numeric) the alpha of the lines. 
+#'      (Default is same as point_col)
+#' @param line_alpha (numeric) Alpha of lines used for residuals from the model. 
 #' 
 #'      (Default is 0.3)
-#' @param line_width (numeric) The width of the lines. 
+#' @param line_width (numeric) Width of lines used for residuals from the model.
 #' 
-#'      (Default is 5)
+#'      (Default is a value that gives same visual thickness as point_size)
+#' @param ctm_point_col Color of the points used for residuals from the mean.
+#' 
+#'      (Default is "coral")  
+#' @param ctm_point_alpha Alpha of the points used for residuals from the mean.
+#' 
+#'      (Default is the same as point_alpha)  
+#' @param ctm_point_size (numeric) Size of the points used for residuals from 
+#'      the mean.
+#' 
+#'      (Default is 2)  
+#' @param ctm_line_col Color of the lines used for residuals from the mean. 
+#' 
+#'      (Default is same value as ctm_point_col)  
+#' @param ctm_line_alpha Alpha of the lines used for residuals from the mean. 
+#' 
+#'      (Default is same value as line_alpha)  
+#' @param ctm_line_width Width of the lines used for residuals from the mean.
+#' 
+#'      (Default is a value that gives same visual thickness as ctm_point_size)   
 #' @param draw_grid (logical) Should a grid be drawn? 
 #' 
 #'      (Default is TRUE)
@@ -66,30 +93,52 @@
 #' # Plot the residuals as points
 #' plot_residuals(model)
 #' 
-#' # Plot the residuals as lines
+#' # Plot the residuals as lines only
 #' plot_residuals(model2, points=F, lines=T, line_width=10)
 #' 
-#' # Plot the residuals as lines and Points
-#' plot_residuals(model3, points=T, lines=T)
+#' # Plot the residuals as points and lines
+#' plot_residuals(model, lines=T)
+#' 
+#' # Plot the residuals of the model, compared to the residuals when the mean 
+#' # is used as the predictor. 
+#' plot_residuals(model, ctm=T, lines=T, points=T, point_size=1)
 #'
 #' @seealso \code{\link{plot_models}} \code{\link{plot.cols}} \code{\link{plot}}  
 #' @keywords residuals plot plot_residuals plot.convenience
 #' @import scales
 #' @export plot_residuals
 #===============================================================================
-plot_residuals <- function(model, points=TRUE, lines=FALSE, point_col="blue", 
-                           point_alpha=0.3, point_size=2, line_col="orange", 
-                           line_alpha=0.3, line_width=5, draw_grid=TRUE, ...){
+plot_residuals <- function(model,  
+                           points=TRUE, lines=FALSE, ctm=FALSE,  
+                           point_col="blue", point_alpha=0.3, point_size=2, 
+                           line_col= point_col, line_alpha=0.3, 
+                           line_width=10*point_size, 
+                           ctm_point_col = "coral", 
+                           ctm_point_alpha = point_alpha, 
+                           ctm_point_size = 2,  
+                           ctm_line_col = ctm_point_col, 
+                           ctm_line_alpha = line_alpha, 
+                           ctm_line_width = 10*ctm_point_size,  
+                           draw_grid = TRUE, ...){
     
-    #---------------------------------------------------------------------------
-    #                            Prepare the Cavas, and plot points if requested
-    #---------------------------------------------------------------------------
     xy = model.frame(model)     # Get x and y points of original data
-    resids = resid(model)       # Calculate the residual values 
+    resids = resid(model)       # Calculate the residual values of the model
     
-    pointType = ifelse(points, "p", "n")
-    plot(xy[,2],resids, col=scales::alpha(point_col, point_alpha), pch=19, 
-         cex=point_size, type=pointType, ...)
+    #---------------------------------------------------------------------------
+    #                                                          Prepare the Cavas
+    #---------------------------------------------------------------------------
+    # Plot canvas, using residuals from the mean line 
+    if (ctm){
+        mean_resids = xy[,1] - mean(xy[,1])     # Residuals from the mean
+        plot(xy[,2], mean_resids, type="n", ...)
+        
+    } 
+    # Plot canvas, using residuals from the model 
+    else {
+        plot(xy[,2], resids, type="n", ...)    
+    }
+    
+    # Add a line at zero
     abline(h=0, lwd=2)    
     
     #---------------------------------------------------------------------------
@@ -99,9 +148,17 @@ plot_residuals <- function(model, points=TRUE, lines=FALSE, point_col="blue",
         grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
              lwd = 1, equilogs = TRUE)
     }
-    
     #---------------------------------------------------------------------------
-    #                                                    plot the residual lines
+    #                                           plot the residual lines for Mean
+    #---------------------------------------------------------------------------
+    if (ctm & lines){
+        segments(x0 = xy[,2], y0 = rep(0, length(xy[,2])), 
+                 x1 = xy[,2], y1 = mean_resids, 
+                 col=scales::alpha(ctm_line_col, ctm_line_alpha), 
+                 lwd=ctm_line_width)
+    }
+    #---------------------------------------------------------------------------
+    #                                          plot the residual lines for Model
     #---------------------------------------------------------------------------
     if (lines){
         segments(x0 = xy[,2], y0 = rep(0, length(xy[,2])), 
@@ -109,5 +166,21 @@ plot_residuals <- function(model, points=TRUE, lines=FALSE, point_col="blue",
                  col=scales::alpha(line_col, line_alpha), 
                  lwd=line_width)
     }
+    #---------------------------------------------------------------------------
+    #                                   Add residual points of Mean if requested
+    #---------------------------------------------------------------------------
+    if (points & ctm){
+        points(xy[,2], 
+           mean_resids, col=scales::alpha(ctm_point_col, ctm_point_alpha), 
+           pch=19, cex=ctm_point_size)
+    }
+    #---------------------------------------------------------------------------
+    #                                  Add residual points of Model if requested
+    #---------------------------------------------------------------------------
+    if (points){
+        points(xy[,2],resids, col=scales::alpha(point_col, point_alpha), pch=19, 
+               cex=point_size)
+    }
+    
 }
 

@@ -4,9 +4,13 @@
 \alias{plot_residuals}
 \title{plot_residuals}
 \usage{
-plot_residuals(model, points = TRUE, lines = FALSE, point_col = "blue",
-  point_alpha = 0.3, point_size = 2, line_col = "orange",
-  line_alpha = 0.3, line_width = 5, draw_grid = TRUE, ...)
+plot_residuals(model, points = TRUE, lines = FALSE, ctm = FALSE,
+  point_col = "blue", point_alpha = 0.3, point_size = 2,
+  line_col = point_col, line_alpha = 0.3, line_width = 10 * point_size,
+  ctm_point_col = "coral", ctm_point_alpha = point_alpha,
+  ctm_point_size = 2, ctm_line_col = ctm_point_col,
+  ctm_line_alpha = line_alpha, ctm_line_width = 10 * ctm_point_size,
+  draw_grid = TRUE, ...)
 }
 \arguments{
 \item{model}{(model object) the model you want to draw the residuals for}
@@ -19,29 +23,63 @@ plot_residuals(model, points = TRUE, lines = FALSE, point_col = "blue",
 
      (Default is FALSE)}
 
-\item{point_col}{the color of the points
+\item{ctm}{(logical) Compare To the Mean? Compare the residuals left over
+     from the model compared to the residuals that would exist if the mean
+     of the putcome variable was used as the estimator.
 
-     (Default is "Blue")}
+     (Default is FALSE)}
 
-\item{point_alpha}{(numeric) the alpha of the points.
+\item{point_col}{Color of the points used for residuals from the model.
+
+     See here for a chart of possible colors:
+     \url{http://research.stowers-institute.org/efg/R/Color/Chart/}
+
+     (Default is "blue")}
+
+\item{point_alpha}{(numeric) Alpha of points used for residuals from model.
 
      (Default is 0.3)}
 
-\item{point_size}{(numeric) The size of the points.
+\item{point_size}{(numeric) Size of points used for residuals from the model.
 
      (Default is 2)}
 
-\item{line_col}{The color od the lines.
+\item{line_col}{Color of the lines used for residuals from the model.
 
-     (Default is "orange")}
+     (Default is same as point_col)}
 
-\item{line_alpha}{(numeric) the alpha of the lines.
+\item{line_alpha}{(numeric) Alpha of lines used for residuals from the model.
 
      (Default is 0.3)}
 
-\item{line_width}{(numeric) The width of the lines.
+\item{line_width}{(numeric) Width of lines used for residuals from the model.
 
-     (Default is 5)}
+     (Default is a value that gives same visual thickness as point_size)}
+
+\item{ctm_point_col}{Color of the points used for residuals from the mean.
+
+     (Default is "coral")}
+
+\item{ctm_point_alpha}{Alpha of the points used for residuals from the mean.
+
+     (Default is the same as point_alpha)}
+
+\item{ctm_point_size}{(numeric) Size of the points used for residuals from
+     the mean.
+
+     (Default is 2)}
+
+\item{ctm_line_col}{Color of the lines used for residuals from the mean.
+
+     (Default is same value as ctm_point_col)}
+
+\item{ctm_line_alpha}{Alpha of the lines used for residuals from the mean.
+
+     (Default is same value as line_alpha)}
+
+\item{ctm_line_width}{Width of the lines used for residuals from the mean.
+
+     (Default is a value that gives same visual thickness as ctm_point_size)}
 
 \item{draw_grid}{(logical) Should a grid be drawn?
 
@@ -82,11 +120,15 @@ model = loess(temperature ~ ozone, data=ozone,span=0.15)
 # Plot the residuals as points
 plot_residuals(model)
 
-# Plot the residuals as lines
+# Plot the residuals as lines only
 plot_residuals(model2, points=F, lines=T, line_width=10)
 
-# Plot the residuals as lines and Points
-plot_residuals(model3, points=T, lines=T)
+# Plot the residuals as points and lines
+plot_residuals(model, lines=T)
+
+# Plot the residuals of the model, compared to the residuals when the mean
+# is used as the predictor.
+plot_residuals(model, ctm=T, lines=T, points=T, point_size=1)
 }
 \author{
 Ronny Restrepo
