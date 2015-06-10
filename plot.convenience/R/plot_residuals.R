@@ -2,6 +2,9 @@
 #       residual plots of mulitple models, each being laid out as a separate cell 
 #       in a grid of plots, one for each model. if only one model is entered
 #       then it just plots one plot as normal. 
+#
+# TODO: Allow option to input of x and y values instead of a model, and in this 
+#       case, use the mean as the predictor. 
 
 #===============================================================================
 #                                                                 PLOT_RESIDUALS
