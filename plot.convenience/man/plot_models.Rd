@@ -95,7 +95,7 @@ plot_models(models, model_color=modcols, modelWidth=c(8,2,4,8,3))
 Ronny Restrepo
 }
 \seealso{
-\code{\link{plot.cols}} \code{\link{plot}}
+\code{\link{plot_residuals}} \code{\link{plot.cols}} \code{\link{plot}}
 }
 \keyword{model}
 \keyword{modelling}

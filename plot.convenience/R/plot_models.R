@@ -96,7 +96,7 @@
 #' # Use different line widths for each model
 #' plot_models(models, model_color=modcols, modelWidth=c(8,2,4,8,3))
 #' 
-#' @seealso \code{\link{plot.cols}} \code{\link{plot}}
+#' @seealso \code{\link{plot_residuals}} \code{\link{plot.cols}} \code{\link{plot}}
 #' @keywords plot plot_models plotting modelling models model 
 #'           plot.convenience
 #' @import scales
