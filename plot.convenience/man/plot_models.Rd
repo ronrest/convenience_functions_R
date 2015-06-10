@@ -57,6 +57,18 @@ By default the plot of each model will be the same color. But you
          , or to have a master and a set of slaves (where
          one is brightly colored, and the others are grey)
 }
+\note{
+Make sure that when you are creating models, that you avoid using the
+      "$" operator.
+
+      BAD:  lm(myData$y ~ myData$x)
+
+      GOOD: lm(y ~ x, data=myData)
+
+      Otherwise you will get error messages like  "'x' and 'y' lengths differ"
+      when you try running the predict() function which is used by
+      plot_models()
+}
 \examples{
 library(ElemStatLearn)
 data(ozone,package="ElemStatLearn")
