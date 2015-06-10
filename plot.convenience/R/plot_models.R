@@ -47,6 +47,7 @@
 #'      See here for a chart of possible colors: 
 #'      \url{http://research.stowers-institute.org/efg/R/Color/Chart/}
 #' @param scatter_alpha (numeric) The alpha of the scatter plots
+#' @param scatter_size (numeric) Size of the scatter points (Default is 2)
 #' @param model_color either a single color for all models to be. Or a vector 
 #'      of colors to cycle through. 
 #' @param model_alpha (numeric) The alpha of the model lines
@@ -89,7 +90,7 @@
 #' @export plot_models 
 #===============================================================================
 plot_models <- function(models, scatter=TRUE, 
-                        scatter_color="blue", scatter_alpha=0.2,
+                        scatter_color="blue", scatter_alpha=0.2, scatter_size=2,
                         model_color="darkorange", model_alpha=1, 
                         modelWidth=2, draw_grid=TRUE, ...){
     
@@ -108,7 +109,7 @@ plot_models <- function(models, scatter=TRUE,
     # Prepare the Cavas, and plot scatter plot if requested
     scatterType = ifelse(scatter, "p", "n")
     plot(xy[,2],xy[,1], col=scales::alpha(scatter_color, scatter_alpha), pch=19, 
-         type=scatterType, ...)
+         cex=scatter_size, type=scatterType, ...)
     
     # Draw grid lines if they are requested
     if (draw_grid){

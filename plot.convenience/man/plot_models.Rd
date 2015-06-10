@@ -5,8 +5,8 @@
 \title{plot_models}
 \usage{
 plot_models(models, scatter = TRUE, scatter_color = "blue",
-  scatter_alpha = 0.2, model_color = "darkorange", model_alpha = 1,
-  modelWidth = 2, draw_grid = TRUE, ...)
+  scatter_alpha = 0.2, scatter_size = 2, model_color = "darkorange",
+  model_alpha = 1, modelWidth = 2, draw_grid = TRUE, ...)
 }
 \arguments{
 \item{models}{a list of model objects}
@@ -23,6 +23,8 @@ plot_models(models, scatter = TRUE, scatter_color = "blue",
      \url{http://research.stowers-institute.org/efg/R/Color/Chart/}}
 
 \item{scatter_alpha}{(numeric) The alpha of the scatter plots}
+
+\item{scatter_size}{(numeric) Size of the scatter points (Default is 2)}
 
 \item{model_color}{either a single color for all models to be. Or a vector
 of colors to cycle through.}
