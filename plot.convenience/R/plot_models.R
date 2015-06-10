@@ -54,6 +54,7 @@
 #'      pass a single value in which case all models will be the same width, 
 #'      or you can specify a vector of numerics to  specify the width of each 
 #'      individual model. 
+#' @param draw_grid (logical) should it include a grid? (Default is TRUE)
 #' @param ... other arguments to be passed on to the parent plot() function.
 #' 
 #'          use ?plot() to see what other arguments can be passed on.  
@@ -90,7 +91,7 @@
 plot_models <- function(models, scatter=TRUE, 
                         scatter_color="blue", scatter_alpha=0.2,
                         model_color="darkorange", model_alpha=1, 
-                        modelWidth=2, ...){
+                        modelWidth=2, draw_grid=TRUE, ...){
     
     # make sure that models is a list of models
     if (class(models) != "list"){
@@ -109,6 +110,11 @@ plot_models <- function(models, scatter=TRUE,
     plot(xy[,2],xy[,1], col=scales::alpha(scatter_color, scatter_alpha), pch=19, 
          type=scatterType, ...)
     
+    # Draw grid lines if they are requested
+    if (draw_grid){
+        grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+             lwd = 1, equilogs = TRUE)
+    }
     # Prepare x axis values for Model
     model.x = data.frame(seq(min(xy[,2]), max(xy[,2]), length.out=100))
     names(model.x) = names(xy)[2]

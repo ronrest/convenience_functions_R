@@ -6,7 +6,7 @@
 \usage{
 plot_models(models, scatter = TRUE, scatter_color = "blue",
   scatter_alpha = 0.2, model_color = "darkorange", model_alpha = 1,
-  modelWidth = 2, ...)
+  modelWidth = 2, draw_grid = TRUE, ...)
 }
 \arguments{
 \item{models}{a list of model objects}
@@ -33,6 +33,8 @@ of colors to cycle through.}
 pass a single value in which case all models will be the same width,
 or you can specify a vector of numerics to  specify the width of each
 individual model.}
+
+\item{draw_grid}{(logical) should it include a grid? (Default is TRUE)}
 
 \item{...}{other arguments to be passed on to the parent plot() function.
 
