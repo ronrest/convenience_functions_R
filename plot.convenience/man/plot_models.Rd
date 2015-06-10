@@ -4,8 +4,9 @@
 \alias{plot_models}
 \title{plot_models}
 \usage{
-plot_models(models, scatter = TRUE, scatterColor = "lightgray",
-  modelColor = "darkorange", modelWidth = 2)
+plot_models(models, scatter = TRUE, scatter_color = "blue",
+  scatter_alpha = 0.2, model_color = "darkorange", model_alpha = 1,
+  modelWidth = 2, ...)
 }
 \arguments{
 \item{models}{a list of model objects}
@@ -16,18 +17,26 @@ plot_models(models, scatter = TRUE, scatterColor = "lightgray",
 
      FALSE =  only plots the models without any of the original data points.}
 
-\item{scatterColor}{the color for the scatter plot of the original data.
+\item{scatter_color}{the color for the scatter plot of the original data.
 
      See here for a chart of possible colors:
      \url{http://research.stowers-institute.org/efg/R/Color/Chart/}}
 
-\item{modelColor}{either a single color for all models to be. Or a vector
+\item{scatter_alpha}{(numeric) The alpha of the scatter plots}
+
+\item{model_color}{either a single color for all models to be. Or a vector
 of colors to cycle through.}
 
+\item{model_alpha}{(numeric) The alpha of the model lines}
+
 \item{modelWidth}{(numeric) width of the model lines. You can wither
-     pass a single value in which case all models will be the same width,
-     or you can specify a vector of numerics to  specify the width of each
-     individual model.}
+pass a single value in which case all models will be the same width,
+or you can specify a vector of numerics to  specify the width of each
+individual model.}
+
+\item{...}{other arguments to be passed on to the parent plot() function.
+
+         use ?plot() to see what other arguments can be passed on.}
 }
 \description{
 Plots multiple models fitted to the same data. By default it
@@ -57,23 +66,26 @@ model5 = loess(temperature ~ ozone, data=ozone, span=20)
 models = list(model1, model2, model3, model4, model5)
 
 plot_models(models)
+plot_models(models, xlab="Ozone", ylab="Temperature",
+            main="Models of Temperature as function of Ozone")
 
 # Use different colors for each model
 modcols = c("darkorchid2","chartreuse","brown2","aquamarine2","darkorange")
 
 # Use different line widths for each model
-plot_models(models, modelColor=modcols, modelWidth=c(8,2,4,8,3))
+plot_models(models, model_color=modcols, modelWidth=c(8,2,4,8,3))
 }
 \author{
 Ronny Restrepo
 }
 \seealso{
-\code{\link{plot.cols}}
+\code{\link{plot.cols}} \code{\link{plot}}
 }
 \keyword{model}
-\keyword{modelling,}
-\keyword{models,}
-\keyword{plot,}
-\keyword{plot_models,}
-\keyword{plotting,}
+\keyword{modelling}
+\keyword{models}
+\keyword{plot}
+\keyword{plot.convenience}
+\keyword{plot_models}
+\keyword{plotting}
 
