@@ -3,6 +3,7 @@
 export(plot.cols)
 export(plot_distribution)
 export(plot_models)
+export(plot_residuals)
 export(plot_surrounding_residuals)
 export(shade_between)
 export(shade_outside)
