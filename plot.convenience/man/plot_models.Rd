@@ -6,7 +6,8 @@
 \usage{
 plot_models(models, scatter = TRUE, scatter_color = "blue",
   scatter_alpha = 0.2, scatter_size = 2, model_color = "darkorange",
-  model_alpha = 1, modelWidth = 2, draw_grid = TRUE, ...)
+  model_alpha = 1, modelWidth = 2, ci = FALSE, ci_level = 0.95,
+  ci_color = model_color, ci_alpha = model_alpha/4, draw_grid = TRUE, ...)
 }
 \arguments{
 \item{models}{a list of model objects}
@@ -36,7 +37,26 @@ pass a single value in which case all models will be the same width,
 or you can specify a vector of numerics to  specify the width of each
 individual model.}
 
-\item{draw_grid}{(logical) should it include a grid? (Default is TRUE)}
+\item{ci}{(logical) Plot the Confidence Interval?
+
+     (Default is TRUE)}
+
+\item{ci_level}{(numeric) confidence level to use. Must be a value between
+     0 and 1.
+
+     (Default is 0.95)}
+
+\item{ci_color}{Color of the Confidence Interval Shaded Region
+
+     (Default is to use same color as model_color)}
+
+\item{ci_alpha}{(numeric) Alpha level of Confidence Interval Shaded Region.
+
+     (Default is model_alpha/4)}
+
+\item{draw_grid}{(logical) should it include a grid?
+
+     (Default is TRUE)}
 
 \item{...}{other arguments to be passed on to the parent plot() function.
 
@@ -56,6 +76,10 @@ By default the plot of each model will be the same color. But you
          first model in the list of models)
          , or to have a master and a set of slaves (where
          one is brightly colored, and the others are grey)
+
+         You can make the models plot with a shaded Confidence Interval. By
+         default, the confidence interval is 0.95, but you can set it to
+         something else.
 }
 \note{
 Make sure that when you are creating models, that you avoid using the
@@ -90,6 +114,11 @@ modcols = c("darkorchid2","chartreuse","brown2","aquamarine2","darkorange")
 
 # Use different line widths for each model
 plot_models(models, model_color=modcols, modelWidth=c(8,2,4,8,3))
+
+# Plot models with Confidence intervals
+models = list(model1, model2)
+modcols = c("darkorchid2", "darkorange")
+plot_models(models, model_color=modcols, ci=T)
 }
 \author{
 Ronny Restrepo
