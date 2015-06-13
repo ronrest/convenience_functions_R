@@ -1,7 +1,7 @@
 #===============================================================================
 #                                                                 CACHE DOWNLOAD
 #===============================================================================
-#' cacheDownload
+#' cache_download
 #' 
 #' Downloads a file from the internet, and caches it locally. So future calls to 
 #' the same function simply load the local file instead of downloading all over 
@@ -15,8 +15,8 @@
 #' @note This function has only been tested on Linux, it might not work on other 
 #'       operating systems yet. 
 #' @import curl
-#' @export
-cacheDownload <- function(url, dataDir, localName){
+#' @export cache_download
+cache_download <- function(url, dataDir, localName){
     require("curl")
     # TODO: Handle circumstances where dataDir is "" or "." or "./"
     # TODO: include option to override existing local file, eg, if there may be 
