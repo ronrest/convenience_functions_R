@@ -3,6 +3,7 @@
 export(int_pairs)
 export(int_plot.cols)
 export(plot.cols)
+export(plot_by_cat)
 export(plot_distribution)
 export(plot_models)
 export(plot_residuals)
