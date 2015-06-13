@@ -5,7 +5,7 @@
 \title{plot_by_cat}
 \usage{
 plot_by_cat(x, y, cat, col = "blue", alpha = 0.3, overlap = FALSE,
-  hlims = TRUE)
+  legend = NA, hlims = TRUE)
 }
 \arguments{
 \item{x}{(vector of numerics) The independent variable}
@@ -20,6 +20,13 @@ plot_by_cat(x, y, cat, col = "blue", alpha = 0.3, overlap = FALSE,
        single plot that is color coded for each category?
 
        If FALSE, then each category is plotted as a separate subplot.}
+
+\item{legend}{(vector of characters) If you selected overlap=TRUE, then a
+       color coded legend will be created. You can optionally specify the
+       strings to be used in the legend here.
+
+       If you do not provide any value here, it will default to using the
+       levels in cat.}
 
 \item{hlims}{(logical) Homogenous Limits?
 
@@ -50,7 +57,8 @@ col = c("magenta", "blue", "green")
 plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=F, col=col)
 
 # Scatter points overlapped, but color coded for different cylinders
-plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=T, col=col)
+plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=T, col=col,
+            legend=c("4 Cylinders", "6 Cylinders", "8 Cylinders"))
 }
 \author{
 Ronny Restrepo

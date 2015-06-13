@@ -21,7 +21,13 @@
 #'        single plot that is color coded for each category? 
 #'        
 #'        If FALSE, then each category is plotted as a separate subplot.  
-#'            
+#' @param legend (vector of characters) If you selected overlap=TRUE, then a 
+#'        color coded legend will be created. You can optionally specify the 
+#'        strings to be used in the legend here. 
+#'        
+#'        If you do not provide any value here, it will default to using the 
+#'        levels in cat. 
+#' 
 #' @param hlims (logical) Homogenous Limits?
 #' 
 #'      TRUE = each subplot is set up with the exact same x and y limits, to 
@@ -41,7 +47,8 @@
 #' plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=F, col=col)
 #' 
 #' # Scatter points overlapped, but color coded for different cylinders
-#' plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=T, col=col)
+#' plot_by_cat(mtcars$disp, mtcars$mpg, cat=mtcars$cyl, overlap=T, col=col, 
+#'             legend=c("4 Cylinders", "6 Cylinders", "8 Cylinders"))
 #' 
 #' @seealso plot.cols plot
 #' @keywords plot_by_cat category group
@@ -49,7 +56,7 @@
 #===============================================================================
 
 plot_by_cat <- function(x, y, cat, col="blue", alpha=0.3, overlap=FALSE, 
-                        hlims=TRUE){
+                        legend=NA, hlims=TRUE){
     cats = levels(as.factor(cat))   # Levels of the categories
     ncats = length(cats)            # Number of categories
     
@@ -65,12 +72,15 @@ plot_by_cat <- function(x, y, cat, col="blue", alpha=0.3, overlap=FALSE,
     col = rep_len(col, ncats)
     
     #--------------------------------------------------------------------------
-    #                                             Set up Grid and Cell Settings
+    #                                            Set up Plot Parameter Settings
     #--------------------------------------------------------------------------
     # Take a snapshot of the current global plotting settings
     BU.par = par(c("mfrow", "mar", "mgp", "tck", "oma"))
     
-    if (!overlap){
+    if (overlap){
+        # Parameters to use to allow legend placement to the right of the plot
+        par(mar=c(5.1, 4.1, 4.1, 5.1))
+    } else {
         # Set New global plotting settings for a grid layout
         set_par_for_n_subplots(ncats)
     }
@@ -81,13 +91,29 @@ plot_by_cat <- function(x, y, cat, col="blue", alpha=0.3, overlap=FALSE,
     for (i in 1:ncats){
         rows = cat == cats[i]
         if ((hlims & !overlap) | (overlap & i == 1)){
-            print("homogenous or first overlap")
             plot(y ~ x, type="n")
         }
         points(x[rows], y[rows], pch=19, col=scales::alpha(col[i], alpha))
         if (!overlap) {
             mtext(cats[i], side=3, line=0.5, cex = labelCex)
         }
+    }
+    #--------------------------------------------------------------------------
+    #                                                    Add a Legend if Needed
+    #--------------------------------------------------------------------------
+    if (overlap){
+        # Set default legend
+        if (is.na(legend[1])){
+            legend = cats
+        }
+        
+        # Trim legend to 12 characters
+        legend = substr(legend, 1, 12)
+        
+        # Add legend to the right hand side
+        legend("topleft", inset=c(1,0), legend=legend, 
+               col=scales::alpha(col, 2*alpha), 
+               pch=19, cex=0.7, xpd=TRUE, bty="n")
     }
     
     # Return the global plot parameters to their previous settings
